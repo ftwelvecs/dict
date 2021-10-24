@@ -1,0 +1,50 @@
+<div class="container">
+
+  <!-- Button trigger modal -->
+  <button type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          style="margin-top: 20px"
+          data-bs-target="#departmentModal">
+    Добавить департамент
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade"
+       id="departmentModal"
+       tabindex="-1"
+       aria-labelledby="departmentModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"
+              id="departmentModalLabel">Добавление департамента</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          <label for="departmentName">Название департамента</label>
+          <input id="departmentName"
+                 class="form-control"
+                 type="text"
+                 #departmentNameInput
+          />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  (click)="add()">Сохранить</button>
+
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ng-content></ng-content>
