@@ -1,3 +1,4 @@
 export interface Department {
-  name:string
+  name:string,
+  regionName: string
 }

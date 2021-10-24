@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Region} from "./region.interface";
+import {RegionService} from "../services/region.service";
 
 @Component({
   selector: 'app-region',
@@ -8,9 +9,11 @@ import {Region} from "./region.interface";
 })
 export class RegionComponent implements OnInit {
 
-  @Output() onRegionAdded: EventEmitter<Region> = new EventEmitter<Region>()
+  // отказываемся от вызова событий для оповещения родительского компонента
+  // @Output() onRegionAdded: EventEmitter<Region> = new EventEmitter<Region>()
 
-  constructor() { }
+  // внедряем RegionService
+  constructor(private regionService: RegionService) { }
 
   ngOnInit(): void {
   }
@@ -19,7 +22,7 @@ export class RegionComponent implements OnInit {
     const region: Region = {
       name: regionName
     }
-    this.onRegionAdded.emit(region)
+    this.regionService.add(region)
   }
 
 }

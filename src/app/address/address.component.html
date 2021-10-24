@@ -5,37 +5,39 @@
           class="btn btn-primary"
           data-bs-toggle="modal"
           style="margin-top: 20px"
-          data-bs-target="#departmentModal">
-    Добавить департамент
+          data-bs-target="#addressModal">
+    Добавить адрес
   </button>
 
   <!-- Modal -->
   <div class="modal fade"
-       id="departmentModal"
+       id="addressModal"
        tabindex="-1"
-       aria-labelledby="departmentModalLabel"
+       aria-labelledby="addressModalLabel"
        aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"
-              id="departmentModalLabel">Добавление департамента</h5>
+              id="addressModalLabel">Добавление адреса</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Закрыть"></button>
         </div>
         <div class="modal-body">
-          <label for="departmentName">Название департамента</label>
-          <input id="departmentName"
+          <label for="cityName">Город</label>
+          <input id="cityName"
                  class="form-control"
                  type="text"
-                 #departmentNameInput
+                 #cityNameInput
           />
-          <label for="regions">Список регионов</label>
-          <select id="regions" class="form-control" #regionSelect>
-            <option *ngFor="let region of regions">{{region.name}}</option>
-          </select>
+          <label for="addressName">Адрес</label>
+          <input id="addressName"
+                 class="form-control"
+                 type="text"
+                 #addressNameInput
+          />
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary"
