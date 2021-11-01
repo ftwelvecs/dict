@@ -1,4 +1,6 @@
+import {Region} from "../region/region.interface";
+
 export interface Department {
-  name:string,
-  regionName: string
+  name: string,
+  region: Region
 }

@@ -3,37 +3,66 @@
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active"
-              id="home-tab"
+              id="users-tab"
               data-bs-toggle="tab"
-              data-bs-target="#home" type="button" role="tab"
-              aria-controls="home" aria-selected="true">Регионы
+              data-bs-target="#users" type="button" role="tab"
+              aria-controls="users" aria-selected="true">Пользователи
       </button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link"
-              id="profile-tab"
+              id="region-tab"
               data-bs-toggle="tab"
-              data-bs-target="#profile"
-              type="button" role="tab"
-              aria-controls="profile"
-              aria-selected="false">Департаменты
+              data-bs-target="#region" type="button" role="tab"
+              aria-controls="region" aria-selected="true">Регионы
       </button>
     </li>
-    <li class="nav-item"
-        role="presentation">
+    <li class="nav-item" role="presentation">
       <button class="nav-link"
-              id="address-tab"
+              id="department-tab"
               data-bs-toggle="tab"
-              data-bs-target="#address"
+              data-bs-target="#department"
               type="button" role="tab"
-              aria-controls="profile"
-              aria-selected="false">Адреса
+              aria-controls="department"
+              aria-selected="false">Департаменты
       </button>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active"
-         id="home" role="tabpanel" aria-labelledby="home-tab">
+         id="users" role="tabpanel" aria-labelledby="users-tab">
+      <app-users>
+        <div class="container" style="margin-top: 20px">
+          <table class="table">
+            <caption>Список пользователей</caption>
+            <thead>
+            <tr>
+              <td>#</td>
+              <td>Логин</td>
+              <td>Имя</td>
+              <td>Фамилия</td>
+              <td>E-mail</td>
+              <td>Департамент</td>
+              <td>Регион</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users; let idx = index">
+              <td>{{idx + 1}}</td>
+              <td>{{user.username}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.department.name}}</td>
+              <td>{{user.department.region.name}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </app-users>
+    </div>
+    <div class="tab-pane fade"
+         id="region" role="tabpanel" aria-labelledby="region-tab">
       <app-region> <!-- (onRegionAdded)="regionAdded($event)" -->
         <div class="container" style="margin-top: 20px">
           <table class="table">
@@ -54,10 +83,10 @@
         </div>
       </app-region>
     </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <app-department (onDepartmentAdded)="departmentAdded($event)">
+    <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="department-tab">
+      <app-department> <!--(onDepartmentAdded)="departmentAdded($event)"-->
         <div class="container" style="margin-top: 20px">
-          <table class="table">
+          <table class="table table-striped table-hover">
             <caption>Список департаментов</caption>
             <thead>
             <tr>
@@ -70,38 +99,12 @@
             <tr *ngFor="let department of departments; let idx = index" appCursorPointer>
               <td>{{idx + 1}}</td>
               <td>{{department.name}}</td>
-              <td>{{department.regionName}}</td>
+              <td>{{department.region.name}}</td>
             </tr>
             </tbody>
           </table>
         </div>
       </app-department>
-    </div>
-    <div class="tab-pane fade"
-         id="address"
-         role="tabpanel"
-         aria-labelledby="address-tab">
-      <app-address (onAddressAdded)="addressAdded($event)">
-        <div class="container" style="margin-top: 20px">
-          <table class="table">
-            <caption>Список адресов</caption>
-            <thead>
-            <tr>
-              <td>#</td>
-              <td>Город</td>
-              <td>Адрес</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let address of addresses; let idx = index" appCursorPointer>
-              <td>{{idx + 1}}</td>
-              <td>{{address.city}}</td>
-              <td>{{address.address}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </app-address>
     </div>
   </div>
 </div>

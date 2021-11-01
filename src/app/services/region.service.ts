@@ -1,5 +1,9 @@
 import {Region} from "../region/region.interface";
+import {Injectable} from "@angular/core";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class RegionService {
   regions: Array<Region> = []
 
@@ -7,4 +11,7 @@ export class RegionService {
     this.regions.push(region)
   }
 
+  findByName(name: string): Region | undefined {
+    return this.regions.find(region => region.name == name)
+  }
 }

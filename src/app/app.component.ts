@@ -3,6 +3,9 @@ import {Department} from "./department/department.interface";
 import {Region} from "./region/region.interface";
 import {Address} from "./address/address.interface";
 import {RegionService} from "./services/region.service";
+import {User} from "./users/user.interface";
+import {UserService} from "./services/user.service";
+import {DepartmentService} from "./services/department.service";
 
 @Component({
   selector: 'app-root',
@@ -16,13 +19,18 @@ export class AppComponent implements OnInit {
   departments: Array<Department> = []
   regions: Array<Region> = []
   addresses: Array<Address> = []
+  users: Array<User> = []
 
-  constructor(private regionService: RegionService) {
+  constructor(private regionService: RegionService,
+              private departmentService: DepartmentService,
+              private userService: UserService) {
   }
 
   ngOnInit() {
     // связали массив в RegionService со своим внутренним массивом
     this.regions = this.regionService.regions
+    this.users = this.userService.users
+    this.departments = this.departmentService.departments
   }
 
   departmentAdded(department: Department) {

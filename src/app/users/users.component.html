@@ -1,0 +1,81 @@
+<div class="container">
+  <!-- Button trigger modal -->
+  <button type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          style="margin-top: 20px"
+          data-bs-target="#usersModal">
+    Добавить пользователя
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade"
+       id="usersModal"
+       tabindex="-1"
+       aria-labelledby="usersModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"
+              id="usersModalLabel">Добавление пользователя</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          <label for="username">Логин</label>
+          <input id="username"
+                 class="form-control"
+                 type="text"
+                 #userNameInput
+          />
+
+          <label for="password">Пароль</label>
+          <input id="password"
+                 class="form-control"
+                 type="password"
+                 #passwordInput
+          />
+
+          <label for="firstName">Имя</label>
+          <input id="firstName"
+                 class="form-control"
+                 type="text"
+                 #firstNameInput
+          />
+
+          <label for="lastName">Фамилия</label>
+          <input id="lastName"
+                 class="form-control"
+                 type="text"
+                 #lastNameInput
+          />
+
+          <label for="email">E-mail</label>
+          <input id="email"
+                 class="form-control"
+                 type="email"
+                 #emailInput
+          />
+
+          <label for="departments">Список департаментов</label>
+          <select id="departments" class="form-control" #departmentSelect>
+            <option *ngFor="let department of departments">{{department.name}}</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  (click)="add()">Сохранить</button>
+
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-content></ng-content>

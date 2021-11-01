@@ -9,6 +9,8 @@ import {FormsModule} from "@angular/forms";
 import {CursorPointerDirective} from './shared/cursor-pointer.directive';
 import {AddressComponent} from './address/address.component';
 import {RegionService} from "./services/region.service";
+import { UsersComponent } from './users/users.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -16,16 +18,16 @@ import {RegionService} from "./services/region.service";
     DepartmentComponent,
     RegionComponent,
     CursorPointerDirective,
-    AddressComponent
+    AddressComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [
-    RegionService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

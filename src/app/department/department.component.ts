@@ -8,6 +8,7 @@ import {
 import {Department} from "./department.interface";
 import {RegionService} from "../services/region.service";
 import {Region} from "../region/region.interface";
+import {DepartmentService} from "../services/department.service";
 
 @Component({
   selector: 'app-department',
@@ -19,11 +20,12 @@ export class DepartmentComponent implements OnInit {
   @ViewChild('departmentNameInput') departmentNameInput:ElementRef
   @ViewChild('regionSelect') regionSelect: ElementRef
   @ContentChild('divElement') divElement:ElementRef
-  @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
+  // @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
 
   regions: Array<Region> = []
 
-  constructor(private regionService: RegionService) {
+  constructor(private regionService: RegionService,
+              private departmentService: DepartmentService) {
   }
 
   ngOnInit(): void {
@@ -32,11 +34,13 @@ export class DepartmentComponent implements OnInit {
   }
 
   add() {
+    let regionName = this.regionSelect.nativeElement.value;
+    const region: any = this.regionService.findByName(regionName)
     const department: Department = {
       name: this.departmentNameInput.nativeElement.value,
-      regionName: this.regionSelect.nativeElement.value
+      region: region
     }
-    this.onDepartmentAdded.emit(department)
+    this.departmentService.add(department)
   }
 
 }
