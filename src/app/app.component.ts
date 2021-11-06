@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Department} from "./department/department.interface";
 import {Region} from "./region/region.interface";
-import {Address} from "./address/address.interface";
 import {RegionService} from "./services/region.service";
 import {User} from "./users/user.interface";
 import {UserService} from "./services/user.service";
@@ -18,7 +17,6 @@ import {DepartmentService} from "./services/department.service";
 export class AppComponent implements OnInit {
   departments: Array<Department> = []
   regions: Array<Region> = []
-  addresses: Array<Address> = []
   users: Array<User> = []
 
   constructor(private regionService: RegionService,
@@ -41,8 +39,4 @@ export class AppComponent implements OnInit {
   /*regionAdded(region: Region) {
     this.regions.push(region)
   }*/
-
-  addressAdded(address: Address) {
-    this.addresses.push(address)
-  }
 }
