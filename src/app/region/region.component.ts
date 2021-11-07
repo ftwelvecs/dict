@@ -11,11 +11,13 @@ export class RegionComponent implements OnInit {
 
   // отказываемся от вызова событий для оповещения родительского компонента
   // @Output() onRegionAdded: EventEmitter<Region> = new EventEmitter<Region>()
+  regions: Array<Region> = []
 
   // внедряем RegionService
   constructor(private regionService: RegionService) { }
 
   ngOnInit(): void {
+    this.regions = this.regionService.regions
   }
 
   add(regionName: string) {

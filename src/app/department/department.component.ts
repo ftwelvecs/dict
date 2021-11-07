@@ -23,6 +23,7 @@ export class DepartmentComponent implements OnInit {
   // @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
 
   regions: Array<Region> = []
+  departments: Array<Department> = []
 
   constructor(private regionService: RegionService,
               private departmentService: DepartmentService) {
@@ -31,6 +32,7 @@ export class DepartmentComponent implements OnInit {
   ngOnInit(): void {
     // связали массив в RegionService со своим внутренним массивом
     this.regions = this.regionService.regions
+    this.departments = this.departmentService.departments
   }
 
   add() {

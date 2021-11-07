@@ -22,7 +22,7 @@ export class DepartmentService {
 
   findByName(name: string): Department | undefined {
     /*
-
+      два вызова метода идентичны между собой
       return this.departments.find(function (department) {
         return department.name == name
       })

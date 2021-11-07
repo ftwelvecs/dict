@@ -3,6 +3,7 @@ import {Department} from "../department/department.interface";
 import {UserService} from "../services/user.service";
 import {DepartmentService} from "../services/department.service";
 import {User} from "./user.interface";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-users',
@@ -12,6 +13,8 @@ import {User} from "./user.interface";
 export class UsersComponent implements OnInit {
 
   private _departments: Array<Department> = []
+  users: Array<User> = []
+
   // декоратор позволяет получить через local reference доступ к элементу DOM
   @ViewChild('userNameInput') private userNameInput: ElementRef
   @ViewChild('passwordInput') private passwordInput: ElementRef
@@ -21,10 +24,13 @@ export class UsersComponent implements OnInit {
   @ViewChild('departmentSelect') private departmentSelect: ElementRef
 
   constructor(private departmentService: DepartmentService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this._departments = this.departmentService.departments
+    this.users = this.userService.users
   }
 
   get departments(): Array<Department> {
@@ -46,6 +52,10 @@ export class UsersComponent implements OnInit {
       department: department
     }
     this.userService.add(user)
+  }
+
+  navigate(user: User) {
+    this.router.navigate([user.username], {relativeTo: this.route})
   }
 
 }
