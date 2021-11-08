@@ -2,6 +2,8 @@
      style="margin-top: 20px">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
       <button class="nav-link"
               routerLinkActive="active"
               routerLink="/home"
@@ -12,6 +14,8 @@
       </button>
     </li>
     <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
       <button class="nav-link"
               routerLinkActive="active"
               routerLink="/users"
@@ -22,6 +26,8 @@
       </button>
     </li>
     <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
       <button class="nav-link"
               routerLinkActive="active"
               routerLink="/region"
@@ -32,9 +38,11 @@
       </button>
     </li>
     <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
       <button class="nav-link"
               routerLinkActive="active"
-              routerLink="/department"
+              routerLink="/departments"
               id="department-tab"
               data-bs-toggle="tab"
               data-bs-target="#department"
@@ -45,32 +53,10 @@
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <!--<div class="tab-pane fade"
-         routerLinkActive="show active"
-         id="{{component}}"
-         role="tabpanel"
-         attr.aria-labelledby="{{component}}-tab"
-         *ngFor="let component of components">
-      <router-outlet></router-outlet>
-    </div>-->
     <div class="tab-pane fade show active"
          id="home" role="tabpanel" aria-labelledby="home-tab">
+      <!-- в зависимости в каком роуте мы находимся, сюда будет подгружатся соответствующий компонент -->
       <router-outlet></router-outlet>
-    </div>
-    <div class="tab-pane fade"
-         id="users" role="tabpanel" aria-labelledby="users-tab">
-      <app-users></app-users>
-    </div>
-    <div class="tab-pane fade"
-         id="region"
-         role="tabpanel"
-         aria-labelledby="region-tab">
-      <app-region> <!-- (onRegionAdded)="regionAdded($event)" -->
-      </app-region>
-    </div>
-    <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="department-tab">
-      <app-department><!--(onDepartmentAdded)="departmentAdded($event)"-->
-      </app-department>
     </div>
   </div>
 </div>

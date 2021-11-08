@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Department} from "../department/department.interface";
+import {Department} from "../departments/department.interface";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({

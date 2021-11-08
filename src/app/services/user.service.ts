@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {User} from "../users/user.interface";
-import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -16,4 +15,7 @@ export class UserService {
     this.users.push(user)
   }
 
+  findByUsername(username: string) {
+    return this.users.find(user => user.username == username)
+  }
 }

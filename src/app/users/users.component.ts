@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Department} from "../department/department.interface";
+import {Department} from "../departments/department.interface";
 import {UserService} from "../services/user.service";
 import {DepartmentService} from "../services/department.service";
 import {User} from "./user.interface";
@@ -25,7 +25,9 @@ export class UsersComponent implements OnInit {
 
   constructor(private departmentService: DepartmentService,
               private userService: UserService,
+              // Router позволяет переходить по страницам
               private router: Router,
+              // внедряем ActivatedRoute чтобы знать текущий URL путь
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -54,8 +56,13 @@ export class UsersComponent implements OnInit {
     this.userService.add(user)
   }
 
+  // вызывается при двойном клике по пользователю
   navigate(user: User) {
+    // если хотим переход относительно текущего пути, то передаем второй параметр
     this.router.navigate([user.username], {relativeTo: this.route})
+
+    // а если абсолютный путь, то указываем весь путь начиная с корня
+    // this.router.navigate(['users', user.username])
   }
 
 }

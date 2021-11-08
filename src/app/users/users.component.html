@@ -93,7 +93,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let user of users; let idx = index">
+    <!-- (dblclick) - событие при двойном клике -->
+    <tr *ngFor="let user of users; let idx = index"
+        (dblclick)="navigate(user)"
+        style="cursor: pointer">
       <td>{{idx + 1}}</td>
       <td>{{user.username}}</td>
       <td>{{user.firstName}}</td>

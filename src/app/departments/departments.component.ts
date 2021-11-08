@@ -12,10 +12,10 @@ import {DepartmentService} from "../services/department.service";
 
 @Component({
   selector: 'app-department',
-  templateUrl: './department.component.html',
-  styleUrls: ['./department.component.css']
+  templateUrl: './departments.component.html',
+  styleUrls: ['./departments.component.css']
 })
-export class DepartmentComponent implements OnInit {
+export class DepartmentsComponent implements OnInit {
 
   @ViewChild('departmentNameInput') departmentNameInput:ElementRef
   @ViewChild('regionSelect') regionSelect: ElementRef

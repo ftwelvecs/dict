@@ -5,22 +5,24 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {DepartmentComponent} from './department/department.component';
+import {DepartmentsComponent} from './departments/departments.component';
 import {RegionComponent} from './region/region.component';
 import {CursorPointerDirective} from './shared/cursor-pointer.directive';
 import { UsersComponent } from './users/users.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './users/user/user.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DepartmentComponent,
+    DepartmentsComponent,
     RegionComponent,
     CursorPointerDirective,
     UsersComponent,
     HomeComponent,
-    UserComponent
+    UserComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

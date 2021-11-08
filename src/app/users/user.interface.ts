@@ -1,4 +1,4 @@
-import {Department} from "../department/department.interface";
+import {Department} from "../departments/department.interface";
 
 export interface User {
   username: string,
