@@ -1,0 +1,61 @@
+[{
+  "username": "admin",
+  "password": "@dmin123",
+  "firstName": "Қуаныш",
+  "lastName": "Оралғазин",
+  "email": "admin@f12school.kz",
+  "department": {
+    "name": "Департамент разработки программного обеспечения",
+    "region": {
+      "name": "г.Нур-Султан"
+    }
+  }
+},{
+  "username": "user1",
+  "password": "123",
+  "firstName": "Әділбек",
+  "lastName": "Бекшин",
+  "email": "bekshin@f12school.kz",
+  "department": {
+    "name": "Департамент разработки программного обеспечения",
+    "region": {
+      "name": "г.Нур-Султан"
+    }
+  }
+},{
+  "username": "user2",
+  "password": "123",
+  "firstName": "Мадина",
+  "lastName": "Айтмағанбетова",
+  "email": "madina@f12school.kz",
+  "department": {
+    "name": "Департамент управления персоналом",
+    "region": {
+      "name": "г.Нур-Султан"
+    }
+  }
+},{
+  "username": "user3",
+  "password": "123",
+  "firstName": "Айтуар",
+  "lastName": "Есболатов",
+  "email": "esbolat@f12school.kz",
+  "department": {
+    "name": "Департамент финансов",
+    "region": {
+      "name": "г.Нур-Султан"
+    }
+  }
+},{
+  "username": "user4",
+  "password": "123",
+  "firstName": "Шалқар",
+  "lastName": "Бекхожин",
+  "email": "shalqar@f12school.kz",
+  "department": {
+    "name": "Департамент финансов",
+    "region": {
+      "name": "г.Нур-Султан"
+    }
+  }
+}]
