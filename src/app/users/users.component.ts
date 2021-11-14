@@ -4,6 +4,8 @@ import {UserService} from "../services/user.service";
 import {DepartmentService} from "../services/department.service";
 import {User} from "./user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Position} from "../positions/position.interface";
+import {PositionService} from "../services/position.service";
 
 @Component({
   selector: 'app-users',
@@ -13,6 +15,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class UsersComponent implements OnInit {
 
   private _departments: Array<Department> = []
+  positions: Array<Position> = []
   users: Array<User> = []
 
   // декоратор позволяет получить через local reference доступ к элементу DOM
@@ -22,17 +25,21 @@ export class UsersComponent implements OnInit {
   @ViewChild('lastNameInput') private lastNameInput: ElementRef
   @ViewChild('emailInput') private emailInput: ElementRef
   @ViewChild('departmentSelect') private departmentSelect: ElementRef
+  @ViewChild('positionSelect') private positionSelect: ElementRef
 
   constructor(private departmentService: DepartmentService,
               private userService: UserService,
+              private positionService: PositionService,
               // Router позволяет переходить по страницам
               private router: Router,
               // внедряем ActivatedRoute чтобы знать текущий URL путь
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this._departments = this.departmentService.departments
     this.users = this.userService.users
+    this.positions = this.positionService.positions
   }
 
   get departments(): Array<Department> {
@@ -51,7 +58,10 @@ export class UsersComponent implements OnInit {
       lastName: this.lastNameInput.nativeElement.value,
       email: this.emailInput.nativeElement.value,
       // устанавливаем значение объектом Department
-      department: department
+      department: department,
+      position: {
+        name: this.positionSelect.nativeElement.value
+      }
     }
     this.userService.add(user)
   }
@@ -63,6 +73,27 @@ export class UsersComponent implements OnInit {
 
     // а если абсолютный путь, то указываем весь путь начиная с корня
     // this.router.navigate(['users', user.username])
+  }
+
+  filter(username: string,
+         firstName: string,
+         lastName: string,
+         email: string,
+         departmentName: string,
+         regionName: string,
+         positionName: string) {
+    // console.log(`username: ${username}, firstName: ${firstName}, lastName: ${lastName}, email: ${email}, departmentName: ${departmentName}, regionName: ${regionName}`)
+
+    this.users = this.userService.users.filter(user =>
+      (!username || user.username.toLowerCase().startsWith(username.toLowerCase())) &&
+      (!firstName || user.firstName.toLowerCase().startsWith(firstName.toLowerCase())) &&
+      (!lastName || user.lastName.toLowerCase().startsWith(lastName.toLowerCase())) &&
+      (!email || user.email.toLowerCase().startsWith(email.toLowerCase())) &&
+      (!departmentName || user.department.name.toLowerCase().startsWith(departmentName.toLowerCase())) &&
+      (!regionName || user.department.region.name.toLowerCase().startsWith(regionName.toLowerCase())) &&
+      (!positionName || user.position.name.toLowerCase().startsWith(positionName.toLowerCase()))
+    )
+
   }
 
 }

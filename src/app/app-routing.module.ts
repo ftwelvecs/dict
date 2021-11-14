@@ -6,6 +6,7 @@ import {RegionComponent} from "./region/region.component";
 import {DepartmentsComponent} from "./departments/departments.component";
 import {UserComponent} from "./users/user/user.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {PositionsComponent} from "./positions/positions.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'users/:username', component: UserComponent },
   { path: 'region', component: RegionComponent },
   { path: 'departments', component: DepartmentsComponent },
+  { path: 'positions', component: PositionsComponent},
   { path: '**', component: NotFoundComponent }
 ];
 

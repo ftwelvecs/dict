@@ -9,6 +9,9 @@
     "region": {
       "name": "г.Нур-Султан"
     }
+  },
+  "position": {
+    "name": "Разработчик"
   }
 },{
   "username": "user1",
@@ -21,6 +24,9 @@
     "region": {
       "name": "г.Нур-Султан"
     }
+  },
+  "position": {
+    "name": "Разработчик"
   }
 },{
   "username": "user2",
@@ -33,6 +39,9 @@
     "region": {
       "name": "г.Нур-Султан"
     }
+  },
+  "position": {
+    "name": "Менеджер"
   }
 },{
   "username": "user3",
@@ -45,6 +54,9 @@
     "region": {
       "name": "г.Нур-Султан"
     }
+  },
+  "position": {
+    "name": "Бухгалтер"
   }
 },{
   "username": "user4",
@@ -57,5 +69,8 @@
     "region": {
       "name": "г.Нур-Султан"
     }
+  },
+  "position": {
+    "name": "Директор департамента"
   }
 }]

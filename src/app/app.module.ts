@@ -12,6 +12,7 @@ import { UsersComponent } from './users/users.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './users/user/user.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PositionsComponent } from './positions/positions.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     UsersComponent,
     HomeComponent,
     UserComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    PositionsComponent
   ],
   imports: [
     BrowserModule,

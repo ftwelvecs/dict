@@ -51,6 +51,20 @@
               aria-selected="false">Департаменты
       </button>
     </li>
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/positions"
+              id="position-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#position"
+              type="button" role="tab"
+              aria-controls="position"
+              aria-selected="false">Должности
+      </button>
+    </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active"

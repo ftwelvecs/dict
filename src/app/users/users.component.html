@@ -64,6 +64,11 @@
           <select id="departments" class="form-control" #departmentSelect>
             <option *ngFor="let department of departments">{{department.name}}</option>
           </select>
+
+          <label for="positions">Список должностей</label>
+          <select id="positions" class="form-control" #positionSelect>
+            <option *ngFor="let position of positions">{{position.name}}</option>
+          </select>
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary"
@@ -90,9 +95,55 @@
       <td>E-mail</td>
       <td>Департамент</td>
       <td>Регион</td>
+      <td>Должность</td>
     </tr>
     </thead>
     <tbody>
+    <tr>
+      <td></td>
+      <td>
+        <input type="text" class="form-control" #username (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #firstName (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #lastName (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #email (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #departmentName (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #regionName (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+      <td>
+        <input type="text" class="form-control" #positionName (keyup)="filter(
+           username.value, firstName.value, lastName.value, email.value,
+           departmentName.value, regionName.value, positionName.value
+        )">
+      </td>
+    </tr>
     <!-- (dblclick) - событие при двойном клике -->
     <tr *ngFor="let user of users; let idx = index"
         (dblclick)="navigate(user)"
@@ -104,6 +155,7 @@
       <td>{{user.email}}</td>
       <td>{{user.department.name}}</td>
       <td>{{user.department.region.name}}</td>
+      <td>{{user.position.name}}</td>
     </tr>
     </tbody>
   </table>
