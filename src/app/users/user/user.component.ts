@@ -10,6 +10,7 @@ import {UserService} from "../../services/user.service";
 export class UserComponent implements OnInit {
 
   user: any
+  editMode: boolean = false
 
   constructor(private route: ActivatedRoute,
               private userService: UserService) { }

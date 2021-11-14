@@ -9,6 +9,7 @@ import {Department} from "./department.interface";
 import {RegionService} from "../services/region.service";
 import {Region} from "../region/region.interface";
 import {DepartmentService} from "../services/department.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-department',
@@ -26,7 +27,9 @@ export class DepartmentsComponent implements OnInit {
   departments: Array<Department> = []
 
   constructor(private regionService: RegionService,
-              private departmentService: DepartmentService) {
+              private departmentService: DepartmentService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -43,6 +46,10 @@ export class DepartmentsComponent implements OnInit {
       region: region
     }
     this.departmentService.add(department)
+  }
+
+  navigate(department: Department) {
+    this.router.navigate([department.name], {relativeTo: this.route})
   }
 
 }

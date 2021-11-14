@@ -62,7 +62,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let department of departments; let idx = index" appCursorPointer>
+    <tr *ngFor="let department of departments; let idx = index"
+        style="cursor: pointer"
+        (dblclick)="navigate(department)">
       <td>{{idx + 1}}</td>
       <td>{{department.name}}</td>
       <td>{{department.region.name}}</td>
