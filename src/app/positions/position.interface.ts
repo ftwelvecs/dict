@@ -1,3 +1,6 @@
 export interface Position {
-  name: string
+  id?: number,
+  name: string,
+  createDate?: Date,
+  lastUpdateDate?: Date
 }

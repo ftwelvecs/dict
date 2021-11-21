@@ -97,7 +97,7 @@ export class UsersComponent implements OnInit {
   }
 
   delete(user: User) {
-    // TODO: удалить пользователя через UserService
+    this.userService.delete(user)
   }
 
 }
