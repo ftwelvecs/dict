@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Department} from "../departments/department.interface";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class DepartmentService {
   departments: Array<Department> = []
 
   constructor(private http: HttpClient) {
-    this.http.get("./assets/departments.json")
+    // обращаемся в бэк
+    this.http.get(`${environment.url}/department/getAll`)
       .subscribe(data => {
         this.departments.push(...<Array<Department>> data)
       })
