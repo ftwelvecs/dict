@@ -11,7 +11,20 @@ export class PositionsComponent implements OnInit {
 
   positions: Array<Position> = []
 
-  constructor(private positionService: PositionService) { }
+  modalId = 'positionModal'
+  modalTitle = 'Добавление должности'
+  // массив описывающий поля для ввода
+  positionFields = [{
+    id: 'positionName',
+    label: 'Должность',
+    // значение соответствует поле объекта, который будет сохранен
+    // например при post запросе значение будет использоваться как ключ
+    // post -> { name: 'Какое-то значение' }
+    name: 'name',
+    type: 'text'
+  }]
+
+  constructor(public positionService: PositionService) { }
 
   ngOnInit(): void {
     this.positions = this.positionService.positions

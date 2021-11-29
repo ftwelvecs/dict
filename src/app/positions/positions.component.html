@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Button trigger modal -->
   <button type="button"
           class="btn btn-primary"
           style="margin-top: 20px"
@@ -7,37 +6,10 @@
           data-bs-target="#positionModal">
     Добавить должность
   </button>
-  <!-- Modal -->
-  <div class="modal fade"
-       id="positionModal"
-       tabindex="-1"
-       aria-labelledby="positionModalLabel"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="positionModalLabel">Добавление должности</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-        </div>
-        <div class="modal-body">
-          <label for="regionName">Должность</label>
-          <input id="regionName"
-                 class="form-control"
-                 type="text"
-                 #positionNameInput
-          />
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  (click)="add(positionNameInput.value)">Сохранить</button>
-          <button type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-modal [id]="modalId"
+             [title]="modalTitle"
+             [fields]="positionFields"
+             [service]="positionService"></app-modal>
 </div>
 <div class="container" style="margin-top: 20px">
   <table class="table caption-top table-bordered table-striped table-hover">
@@ -46,12 +18,19 @@
     <tr>
       <td>#</td>
       <td>Название</td>
+      <td>Действия</td>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let position of positions; let idx = index">
       <td>{{idx + 1}}</td>
       <td>{{position.name}}</td>
+      <td>
+        <app-menu>
+          <!--<li><a class="dropdown-item" [routerLink]="[user.username]">Редактировать</a></li>
+          <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>-->
+        </app-menu>
+      </td>
     </tr>
     </tbody>
   </table>

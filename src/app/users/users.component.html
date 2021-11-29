@@ -158,23 +158,10 @@
       <td (dblclick)="navigate(user)">{{user.department.region.name}}</td>
       <td (dblclick)="navigate(user)">{{user.position.name}}</td>
       <td>
-        <ul class="nav nav-tabs">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle"
-               data-bs-toggle="dropdown"
-               href="#"
-               role="button"
-               aria-expanded="false">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-              </svg>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" [routerLink]="[user.username]">Редактировать</a></li>
-              <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>
-            </ul>
-          </li>
-        </ul>
+        <app-menu>
+          <li><a class="dropdown-item" [routerLink]="[user.username]">Редактировать</a></li>
+          <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>
+        </app-menu>
       </td>
     </tr>
     </tbody>
