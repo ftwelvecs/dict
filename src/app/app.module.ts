@@ -14,6 +14,8 @@ import { UserComponent } from './users/user/user.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PositionsComponent } from './positions/positions.component';
 import { DepartmentComponent } from './departments/department/department.component';
+import { MenuComponent } from './shared/menu/menu.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { DepartmentComponent } from './departments/department/department.compone
     UserComponent,
     NotFoundComponent,
     PositionsComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    MenuComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
