@@ -33,6 +33,10 @@ export class PositionService implements Service {
   save(position: any) {
     //  устанавливаем кодировку в заголовок запроса
     let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    // post метод принимает три параметра:
+    // 1. url - путь к серверу
+    // 2. body - объект, который нужно передать
+    // 3. конфигурационный объект
     this.http.post(`${environment.url}/position/create`, position, {headers: headers})
       .subscribe(() => this.reload())
   }
