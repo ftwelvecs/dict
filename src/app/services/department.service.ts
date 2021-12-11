@@ -41,7 +41,7 @@ export class DepartmentService implements Service {
 
   save(department: any) {
     const dep: Department = {
-      name: department.departmentName,
+      name: department.name,
       region: {
         id: department.regionId
       }
