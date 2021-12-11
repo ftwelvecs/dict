@@ -90,7 +90,7 @@ export class UsersComponent implements OnInit {
       (!lastName || user.lastName.toLowerCase().startsWith(lastName.toLowerCase())) &&
       (!email || user.email.toLowerCase().startsWith(email.toLowerCase())) &&
       (!departmentName || user.department.name.toLowerCase().startsWith(departmentName.toLowerCase())) &&
-      (!regionName || user.department.region.name.toLowerCase().startsWith(regionName.toLowerCase())) &&
+      (!regionName || user.department.region.name?.toLowerCase().startsWith(regionName.toLowerCase())) &&
       (!positionName || user.position.name.toLowerCase().startsWith(positionName.toLowerCase()))
     )
 

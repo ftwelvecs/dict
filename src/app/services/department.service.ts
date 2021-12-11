@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Department} from "../departments/department.interface";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";
 
@@ -13,8 +13,14 @@ export class DepartmentService implements Service {
 
   constructor(private http: HttpClient) {
     // обращаемся в бэк
+    this.reload()
+  }
+
+  reload() {
+
     this.http.get(`${environment.url}/department/getAll`)
       .subscribe(data => {
+        this.departments.length = 0
         this.departments.push(...<Array<Department>> data)
       })
   }
@@ -34,6 +40,14 @@ export class DepartmentService implements Service {
   }
 
   save(department: any) {
-    console.log(department)
+    const dep: Department = {
+      name: department.departmentName,
+      region: {
+        id: department.regionId
+      }
+    }
+    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    this.http.post(`${environment.url}/department/create`, dep, {headers})
+      .subscribe(() => this.reload())
   }
 }

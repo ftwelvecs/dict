@@ -25,7 +25,7 @@
                 Название передается динамически через -> field.name
               -->
               <input id="{{field.id}}"
-                     [(ngModel)]="element[field.name]"
+                     [(ngModel)]="element[field.value]"
                      class="form-control"
                      type="{{field.type}}"
               />
@@ -34,9 +34,9 @@
               <label for="{{field.id}}">{{field.label}}</label>
               <select id="{{field.id}}"
                       class="form-control"
-                      [(ngModel)]="element[field.name]">
+                      [(ngModel)]="element[field.fieldName]">
                 <option *ngFor="let option of field.options"
-                        [ngValue]="option[field.name]">{{option[field.name]}}</option>
+                        [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
               </select>
             </ng-template>
             <ng-template ngSwitchDefault>

@@ -35,6 +35,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     // например при post запросе значение будет использоваться как ключ
     // post -> { name: 'Какое-то значение' }
     name: 'name',
+    value: 'departmentName',
     type: 'text',
     controlType: 'input'
   }, {
@@ -42,7 +43,9 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     label: 'Список регионов',
     controlType: 'select',
     options: this.regions,
-    name: 'name'
+    displayValue: 'name',
+    setValue: 'id',
+    fieldName: 'regionId'
   }]
 
   private subscription: Subscription
