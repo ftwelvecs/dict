@@ -8,48 +8,10 @@
           data-bs-target="#departmentModal">
     Добавить департамент
   </button>
-
-  <!-- Modal -->
-  <div class="modal fade"
-       id="departmentModal"
-       tabindex="-1"
-       aria-labelledby="departmentModalLabel"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"
-              id="departmentModalLabel">Добавление департамента</h5>
-          <button type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Закрыть"></button>
-        </div>
-        <div class="modal-body">
-          <label for="departmentName">Название департамента</label>
-          <input id="departmentName"
-                 class="form-control"
-                 type="text"
-                 #departmentNameInput
-          />
-          <label for="regions">Список регионов</label>
-          <select id="regions" class="form-control" #regionSelect>
-            <option *ngFor="let region of regions">{{region.name}}</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  (click)="add()">Сохранить</button>
-
-          <button type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <app-modal [id]="modalId"
+             [title]="modalTitle"
+             [fields]="departmentFields"
+             [service]="departmentService"></app-modal>
 </div>
 <div class="container" style="margin-top: 20px">
   <table class="table caption-top table-bordered table-striped table-hover">

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {Department} from "../departments/department.interface";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {Service} from "./service.interface";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DepartmentService {
+export class DepartmentService implements Service {
 
   departments: Array<Department> = []
 
@@ -30,5 +31,9 @@ export class DepartmentService {
       })
     */
     return this.departments.find(department => department.name == name)
+  }
+
+  save(department: any) {
+    console.log(department)
   }
 }

@@ -21,13 +21,18 @@ export class PositionsComponent implements OnInit {
     // например при post запросе значение будет использоваться как ключ
     // post -> { name: 'Какое-то значение' }
     name: 'name',
-    type: 'text'
+    type: 'text',
+    controlType: 'input'
   }]
 
   constructor(public positionService: PositionService) { }
 
   ngOnInit(): void {
     this.positions = this.positionService.positions
+  }
+
+  edit(position: Position) {
+
   }
 
   add(positionName: string) {

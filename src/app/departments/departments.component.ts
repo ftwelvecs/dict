@@ -1,7 +1,7 @@
 import {
   Component, ContentChild,
   ElementRef,
-  EventEmitter,
+  EventEmitter, OnDestroy,
   OnInit,
   Output, ViewChild
 } from '@angular/core';
@@ -10,42 +10,61 @@ import {RegionService} from "../services/region.service";
 import {Region} from "../region/region.interface";
 import {DepartmentService} from "../services/department.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-department',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css']
 })
-export class DepartmentsComponent implements OnInit {
+export class DepartmentsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('departmentNameInput') departmentNameInput:ElementRef
+  @ViewChild('departmentNameInput') departmentNameInput: ElementRef
   @ViewChild('regionSelect') regionSelect: ElementRef
-  @ContentChild('divElement') divElement:ElementRef
+  @ContentChild('divElement') divElement: ElementRef
   // @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
 
   regions: Array<Region> = []
   departments: Array<Department> = []
+  modalId = 'departmentModal'
+  modalTitle = 'Добавление департамента'
+  departmentFields = [{
+    id: 'departmentName',
+    label: 'Название департамента',
+    // значение соответствует поле объекта, который будет сохранен
+    // например при post запросе значение будет использоваться как ключ
+    // post -> { name: 'Какое-то значение' }
+    name: 'name',
+    type: 'text',
+    controlType: 'input'
+  }, {
+    id: 'regions',
+    label: 'Список регионов',
+    controlType: 'select',
+    options: this.regions,
+    name: 'name'
+  }]
+
+  private subscription: Subscription
 
   constructor(private regionService: RegionService,
-              private departmentService: DepartmentService,
+              public departmentService: DepartmentService,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     // связали массив в RegionService со своим внутренним массивом
-    this.regions = this.regionService.regions
     this.departments = this.departmentService.departments
+    this.subscription = this.regionService.getRegions()
+      .subscribe(data => {
+        this.regions.length = 0
+        this.regions.push(...data)
+      })
   }
 
-  add() {
-    let regionName = this.regionSelect.nativeElement.value;
-    const region: any = this.regionService.findByName(regionName)
-    const department: Department = {
-      name: this.departmentNameInput.nativeElement.value,
-      region: region
-    }
-    this.departmentService.add(department)
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
   navigate(department: Department) {

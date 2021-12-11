@@ -26,9 +26,14 @@
       <td>{{idx + 1}}</td>
       <td>{{position.name}}</td>
       <td>
+        <!--<app-modal [id]="'editPositionModal'"
+                   [title]="'Редактирование должности'"
+                   [fields]="positionFields"
+                   [element]="position"
+                   [service]="positionService"></app-modal>-->
         <app-menu>
-          <!--<li><a class="dropdown-item" [routerLink]="[user.username]">Редактировать</a></li>
-          <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>-->
+          <li><a class="dropdown-item" (click)="edit(position)">Редактировать</a></li>
+<!--          <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>-->
         </app-menu>
       </td>
     </tr>

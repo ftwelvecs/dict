@@ -12,8 +12,7 @@ export class ModalComponent implements OnInit {
   @Input() title: string
   @Input() fields: Array<any>
   @Input() service: Service
-
-  element:any = {}
+  @Input() element: any = {}
 
   constructor() { }
 
