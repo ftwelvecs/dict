@@ -1,58 +1,39 @@
-<div class="modal fade"
-     id="{{id}}"
-     tabindex="-1"
-     attr.aria-labelledby="{{id + 'Label'}}"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"
-            id="{{id + 'Label'}}">{{title}}</h5>
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Закрыть"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row" *ngFor="let field of fields">
-          <div class="col-sm-12" [ngSwitch]="field.controlType">
-            <ng-template ngSwitchCase="input">
-              <label for="{{field.id}}">{{field.label}}</label>
-              <!--
-                [(ngModel)]="element[field.name]"
-                через ngModel вводимое значение пользователя
-                сохраняем в поле объекта element.
-                Название передается динамически через -> field.name
-              -->
-              <input id="{{field.id}}"
-                     [(ngModel)]="element[field.name]"
-                     class="form-control"
-                     type="{{field.type}}"
-              />
-            </ng-template>
-            <ng-template ngSwitchCase="select">
-              <label for="{{field.id}}">{{field.label}}</label>
-              <select id="{{field.id}}"
-                      class="form-control"
-                      [(ngModel)]="element[field.name]">
-                <option *ngFor="let option of field.options"
-                        [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
-              </select>
-            </ng-template>
-            <ng-template ngSwitchDefault>
-              <p>No fields</p>
-            </ng-template>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary"
-                data-bs-dismiss="modal"
-                (click)="save()">Сохранить</button>
-        <button type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal">Закрыть</button>
-      </div>
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+  <div class="row" *ngFor="let field of fields">
+    <div class="col-sm-12" [ngSwitch]="field.controlType">
+      <ng-template ngSwitchCase="input">
+        <label for="{{field.id}}">{{field.label}}</label>
+        <!--
+          [(ngModel)]="element[field.name]"
+          через ngModel вводимое значение пользователя
+          сохраняем в поле объекта element.
+          Название передается динамически через -> field.name
+        -->
+        <input id="{{field.id}}"
+               [(ngModel)]="element[field.name]"
+               class="form-control"
+               type="{{field.type}}"
+        />
+      </ng-template>
+      <ng-template ngSwitchCase="select">
+        <label for="{{field.id}}">{{field.label}}</label>
+        <select id="{{field.id}}"
+                class="form-control"
+                [(ngModel)]="element[field.name]">
+          <option *ngFor="let option of field.options"
+                  [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
+        </select>
+      </ng-template>
+      <ng-template ngSwitchDefault>
+        <p>No fields</p>
+      </ng-template>
     </div>
   </div>
+</div>
+<div mat-dialog-actions>
+  <button *ngFor="let button of buttons"
+          mat-raised-button
+          color="{{button.color}}"
+          (click)="button.action(element)">{{button.label}}</button>
 </div>

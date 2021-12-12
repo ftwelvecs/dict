@@ -50,4 +50,17 @@ export class DepartmentService implements Service {
     this.http.post(`${environment.url}/department/create`, dep, {headers})
       .subscribe(() => this.reload())
   }
+
+  edit(department: any) {
+    const dep: Department = {
+      name: department.name,
+      region: {
+        id: department.regionId
+      }
+    }
+
+    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    this.http.put(`${environment.url}/department/update`, dep, {headers})
+      .subscribe(() => this.reload())
+  }
 }

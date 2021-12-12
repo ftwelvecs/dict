@@ -16,6 +16,9 @@ import { PositionsComponent } from './positions/positions.component';
 import { DepartmentComponent } from './departments/department/department.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { ModalComponent } from './shared/modal/modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { ModalComponent } from './shared/modal/modal.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

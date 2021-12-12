@@ -1,16 +1,18 @@
 import {
   Component, ContentChild,
   ElementRef,
-  EventEmitter, OnDestroy,
+  OnDestroy,
   OnInit,
-  Output, ViewChild
+  ViewChild
 } from '@angular/core';
 import {Department} from "./department.interface";
 import {RegionService} from "../services/region.service";
 import {Region} from "../region/region.interface";
 import {DepartmentService} from "../services/department.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {ModalComponent} from "../shared/modal/modal.component";
 
 @Component({
   selector: 'app-department',
@@ -26,8 +28,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
 
   regions: Array<Region> = []
   departments: Array<Department> = []
-  modalId = 'departmentModal'
-  modalTitle = 'Добавление департамента'
+
   departmentFields = [{
     id: 'departmentName',
     label: 'Название департамента',
@@ -52,7 +53,8 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
   constructor(private regionService: RegionService,
               public departmentService: DepartmentService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -63,6 +65,54 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         this.regions.length = 0
         this.regions.push(...data)
       })
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Добавление департамента',
+        fields: this.departmentFields,
+        buttons: [{
+          color: 'primary',
+          action: (element: any) => {
+            this.departmentService.save(element)
+            dialogRef.close()
+          },
+          label: 'Сохранить'
+        },{
+          action: () => dialogRef.close(),
+          label: 'Закрыть'
+        }],
+        service: this.departmentService
+      }
+    })
+  }
+
+  edit(department: Department) {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Редактирование департамента',
+        fields: this.departmentFields,
+        service: this.departmentService,
+        element: {
+          name: department.name,
+          regionId: department.region.id
+        },
+        buttons: [{
+          color: 'primary',
+          action: (element: any) => {
+            this.departmentService.edit(element)
+            dialogRef.close()
+          },
+          label: 'Редактировать'
+        },{
+          action: () => dialogRef.close(),
+          label: 'Закрыть'
+        }],
+      }
+    })
   }
 
   ngOnDestroy() {

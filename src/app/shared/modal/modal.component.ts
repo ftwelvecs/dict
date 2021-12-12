@@ -1,5 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Service} from "../../services/service.interface";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+
+export interface DialogData {
+  title: string,
+  fields: Array<any>,
+  service: Service,
+  buttons: Array<any>,
+  element?: any
+}
 
 @Component({
   selector: 'app-modal',
@@ -8,19 +17,22 @@ import {Service} from "../../services/service.interface";
 })
 export class ModalComponent implements OnInit {
 
-  @Input() id: string
-  @Input() title: string
-  @Input() fields: Array<any>
-  @Input() service: Service
-  @Input() element: any = {}
+  title: string
+  fields: Array<any>
+  buttons: Array<any>
+  service: Service
+  element: any
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(public dialogRef: MatDialogRef<ModalComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    this.title = data.title
+    this.fields = data.fields
+    this.buttons = data.buttons
+    this.service = data.service
+    this.element = data.element || {}
   }
 
-  save() {
-    this.service.save(this.element)
+  ngOnInit(): void {
   }
 
 }
