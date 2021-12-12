@@ -97,6 +97,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         fields: this.departmentFields,
         service: this.departmentService,
         element: {
+          id: department.id,
           name: department.name,
           regionId: department.region.id
         },

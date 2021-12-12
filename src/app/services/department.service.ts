@@ -53,6 +53,7 @@ export class DepartmentService implements Service {
 
   edit(department: any) {
     const dep: Department = {
+      id: department.id,
       name: department.name,
       region: {
         id: department.regionId
