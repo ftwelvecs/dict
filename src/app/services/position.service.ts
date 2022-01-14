@@ -41,4 +41,27 @@ export class PositionService implements Service {
       .subscribe(() => this.reload())
   }
 
+  edit(position: any) {
+    const pos: Position = {
+      id: position.id,
+      name: position.name
+    }
+    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    this.http.put(`${environment.url}/position/update`, pos, {headers})
+      .subscribe(() => this.reload())
+  }
+
+  delete(position: any) {
+    const pos: Position = {
+      id: position.id,
+      name: position.name
+    }
+    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    this.http.delete(`${environment.url}/position/delete`, {
+      headers: headers,
+      body: pos
+    })
+      .subscribe(() => this.reload())
+  }
+
 }

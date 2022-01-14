@@ -64,4 +64,21 @@ export class DepartmentService implements Service {
     this.http.put(`${environment.url}/department/update`, dep, {headers})
       .subscribe(() => this.reload())
   }
+
+  delete(department: any) {
+    const dep: Department = {
+      id: department.id,
+      name: department.name,
+      region: {
+        id: department.regionId
+      }
+    }
+
+    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    this.http.delete(`${environment.url}/department/delete`, {
+      headers: headers,
+      body: dep
+    })
+      .subscribe(() => this.reload())
+  }
 }

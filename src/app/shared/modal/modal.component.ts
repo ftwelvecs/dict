@@ -28,7 +28,6 @@ export class ModalComponent implements OnInit {
     this.title = data.title
     this.fields = data.fields
     this.buttons = data.buttons
-    this.service = data.service
     this.element = data.element || {}
   }
 

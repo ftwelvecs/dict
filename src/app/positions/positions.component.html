@@ -2,14 +2,9 @@
   <button type="button"
           class="btn btn-primary"
           style="margin-top: 20px"
-          data-bs-toggle="modal"
-          data-bs-target="#positionModal">
+          (click)="openDialog()">
     Добавить должность
   </button>
- <!-- <app-modal [id]="modalId"
-             [title]="modalTitle"
-             [fields]="positionFields"
-             [service]="positionService"></app-modal>-->
 </div>
 <div class="container" style="margin-top: 20px">
   <table class="table caption-top table-bordered table-striped table-hover">
@@ -26,14 +21,17 @@
       <td>{{idx + 1}}</td>
       <td>{{position.name}}</td>
       <td>
-        <!--<app-modal [id]="'editPositionModal'"
-                   [title]="'Редактирование должности'"
-                   [fields]="positionFields"
-                   [element]="position"
-                   [service]="positionService"></app-modal>-->
         <app-menu>
-          <li><a class="dropdown-item" (click)="edit(position)">Редактировать</a></li>
-<!--          <li><a class="dropdown-item" (click)="delete(user)">Удалить</a></li>-->
+          <li>
+            <a class="dropdown-item"
+               style="cursor: pointer"
+               (click)="edit(position)">Редактировать</a>
+          </li>
+          <li>
+            <a class="dropdown-item"
+               style="cursor: pointer"
+               (click)="delete(position)">Удалить</a>
+          </li>
         </app-menu>
       </td>
     </tr>

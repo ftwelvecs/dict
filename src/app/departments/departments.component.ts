@@ -21,8 +21,6 @@ import {ModalComponent} from "../shared/modal/modal.component";
 })
 export class DepartmentsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('departmentNameInput') departmentNameInput: ElementRef
-  @ViewChild('regionSelect') regionSelect: ElementRef
   @ContentChild('divElement') divElement: ElementRef
   // @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
 
@@ -83,8 +81,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         },{
           action: () => dialogRef.close(),
           label: 'Закрыть'
-        }],
-        service: this.departmentService
+        }]
       }
     })
   }
@@ -95,7 +92,6 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
       data: {
         title: 'Редактирование департамента',
         fields: this.departmentFields,
-        service: this.departmentService,
         element: {
           id: department.id,
           name: department.name,
@@ -114,6 +110,10 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         }],
       }
     })
+  }
+
+  delete(department: Department) {
+    this.departmentService.delete(department)
   }
 
   ngOnDestroy() {
