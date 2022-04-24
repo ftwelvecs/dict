@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Region} from "./region.interface";
-import {RegionService} from "../services/region.service";
+import {RegionService} from "../../services/region.service";
 
 @Component({
   selector: 'app-region',

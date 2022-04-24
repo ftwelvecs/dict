@@ -1,0 +1,76 @@
+<div class="container"
+     style="margin-top: 20px">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/home"
+              id="home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#home" type="button" role="tab"
+              aria-controls="home" aria-selected="true">Главная
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/users"
+              id="users-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#users" type="button" role="tab"
+              aria-controls="users" aria-selected="true">Пользователи
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/region"
+              id="region-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#region" type="button" role="tab"
+              aria-controls="region" aria-selected="true">Регионы
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/departments"
+              id="department-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#department"
+              type="button" role="tab"
+              aria-controls="department"
+              aria-selected="false">Департаменты
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <!-- в routerLinkActive передается css класс, в данном случае класс Bootstrap -->
+      <!-- атрибут routerLink для перехода -->
+      <button class="nav-link"
+              routerLinkActive="active"
+              routerLink="/positions"
+              id="position-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#position"
+              type="button" role="tab"
+              aria-controls="position"
+              aria-selected="false">Должности
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active"
+         id="home" role="tabpanel" aria-labelledby="home-tab">
+      <!-- в зависимости в каком роуте мы находимся, сюда будет подгружатся соответствующий компонент -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import {Region} from "../region/region.interface";
+import {Region} from "../components/region/region.interface";
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Service} from "./service.interface";

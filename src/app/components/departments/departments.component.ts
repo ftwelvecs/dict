@@ -6,13 +6,13 @@ import {
   ViewChild
 } from '@angular/core';
 import {Department} from "./department.interface";
-import {RegionService} from "../services/region.service";
+import {RegionService} from "../../services/region.service";
 import {Region} from "../region/region.interface";
-import {DepartmentService} from "../services/department.service";
+import {DepartmentService} from "../../services/department.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalComponent} from "../shared/modal/modal.component";
+import {ModalComponent} from "../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-department',

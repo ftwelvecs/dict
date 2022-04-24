@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Department} from "../departments/department.interface";
-import {UserService} from "../services/user.service";
-import {DepartmentService} from "../services/department.service";
+import {UserService} from "../../services/user.service";
+import {DepartmentService} from "../../services/department.service";
 import {User} from "./user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Position} from "../positions/position.interface";
-import {PositionService} from "../services/position.service";
+import {PositionService} from "../../services/position.service";
 
 @Component({
   selector: 'app-users',

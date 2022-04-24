@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Position} from "../positions/position.interface";
+import {Position} from "../components/positions/position.interface";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";

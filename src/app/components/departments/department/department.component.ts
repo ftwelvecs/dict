@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {DepartmentService} from "../../services/department.service";
+import {DepartmentService} from "../../../services/department.service";
 import {User} from "../../users/user.interface";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-department',

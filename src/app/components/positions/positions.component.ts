@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Position} from "./position.interface";
-import {PositionService} from "../services/position.service";
+import {PositionService} from "../../services/position.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalComponent} from "../shared/modal/modal.component";
+import {ModalComponent} from "../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-positions',
