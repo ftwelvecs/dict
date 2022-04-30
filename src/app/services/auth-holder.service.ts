@@ -12,17 +12,16 @@ export class AuthHolderService {
   constructor(private http: HttpClient) {
   }
 
-  public login() {
-    const authRequest = {
-      username: 'developer',
-      password: '123'
-    };
-
+  public login(authRequest: AuthRequest) {
     this.http.post(`${environment.url}/auth/login`, authRequest)
       .subscribe((response:any) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
       });
   }
+}
 
+export interface AuthRequest {
+  username: string;
+  password: string;
 }

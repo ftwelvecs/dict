@@ -1,18 +1,38 @@
 <div class="content" [ngClass.lt-sm]="'content-mobile'">
-  <form>
+  <form [formGroup]="form">
     <div fxLayout="column" fxLayoutAlign="center center">
       <h2>Login page</h2>
     </div>
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" id="username" placeholder="Введите логин">
+      <input type="text"
+             class="form-control"
+             id="username"
+             formControlName="username"
+             placeholder="Введите логин">
+      <span class="mt-16 c-red" *ngIf="form.get('username')?.hasError('required') && form.get('username')?.touched">
+        Поле логин обязателен
+      </span>
+      <span class="mt-16 c-red" *ngIf="form.get('username')?.hasError('minlength') && form.get('username')?.touched">
+        {{
+          'Минимальная длина символов: ' + form.get('username')?.getError('minlength')?.requiredLength
+          + ', вы ввели: ' + form.get('username')?.getError('minlength')?.actualLength + ' символ(ов)'
+        }}
+      </span>
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Введите пароль">
+      <input type="password"
+             class="form-control"
+             id="password"
+             formControlName="password"
+             placeholder="Введите пароль">
     </div>
     <div fxLayout="column" fxLayoutAlign="center end">
-      <button (click)="login()" type="button" class="btn btn-primary">Логин</button>
+      <button (click)="login()"
+
+              type="button"
+              class="btn btn-primary">Логин</button>
     </div>
   </form>
 </div>

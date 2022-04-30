@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -50,7 +50,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     BrowserAnimationsModule,
     MatDialogModule,
     MatButtonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

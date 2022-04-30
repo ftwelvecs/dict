@@ -10,3 +10,15 @@
 .content-mobile {
   width: 100%;
 }
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.c-red {
+  color: red;
+}
+
+input.ng-touched.ng-invalid {
+  border: 1px solid red;
+}
