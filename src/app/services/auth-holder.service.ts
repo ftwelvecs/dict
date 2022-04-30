@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,10 @@ export class AuthHolderService {
 
   private token: string;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
   }
 
   public login(authRequest: AuthRequest) {
@@ -17,6 +21,7 @@ export class AuthHolderService {
       .subscribe((response:any) => {
         this.token = response.token;
         localStorage.setItem('token', this.token);
+        this.router.navigate(['/home'])
       });
   }
 }

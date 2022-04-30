@@ -30,7 +30,7 @@
     </div>
     <div fxLayout="column" fxLayoutAlign="center end">
       <button (click)="login()"
-
+              [disabled]="form.status === 'INVALID'"
               type="button"
               class="btn btn-primary">Логин</button>
     </div>
