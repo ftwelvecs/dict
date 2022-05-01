@@ -8,8 +8,6 @@ import {Router} from "@angular/router";
 })
 export class AuthHolderService {
 
-  private token: string;
-
   constructor(
     private http: HttpClient,
     private router: Router
@@ -19,10 +17,13 @@ export class AuthHolderService {
   public login(authRequest: AuthRequest) {
     this.http.post(`${environment.url}/auth/login`, authRequest)
       .subscribe((response:any) => {
-        this.token = response.token;
-        localStorage.setItem('token', this.token);
+        localStorage.setItem('token', response.token);
         this.router.navigate(['/home'])
       });
+  }
+
+  get token(): string {
+    return localStorage.getItem('token') as string;
   }
 }
 
