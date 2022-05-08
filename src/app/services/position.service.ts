@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";
 import {AuthHolderService} from "./auth-holder.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -55,22 +56,31 @@ export class PositionService implements Service {
       id: position.id,
       name: position.name
     }
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
-    this.http.put(`${environment.url}/position/update`, pos, {headers})
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    this.http.put(`${environment.url}/position`, pos, {headers})
       .subscribe(() => this.reload())
   }
 
-  delete(position: any) {
+  delete(position: any): Observable<any> {
     const pos: Position = {
       id: position.id,
       name: position.name
     }
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
-    this.http.delete(`${environment.url}/position/delete`, {
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    const response = this.http.delete(`${environment.url}/position`, {
       headers: headers,
       body: pos
     })
-      .subscribe(() => this.reload())
+
+    response.subscribe(() => {
+      this.reload()
+    })
+
+    return response;
   }
 
 }

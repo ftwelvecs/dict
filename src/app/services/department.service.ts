@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Department} from "../components/departments/department.interface";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";
+import {AuthHolderService} from "./auth-holder.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,18 @@ export class DepartmentService implements Service {
 
   departments: Array<Department> = []
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authHolderService: AuthHolderService) {
     // обращаемся в бэк
     this.reload()
   }
 
   reload() {
 
-    this.http.get(`${environment.url}/department/getAll`)
+    // добавляем заголовок authorization при каждом вызове в бэк
+    const token = this.authHolderService.token;
+    const headers = new HttpHeaders({Authorization: "Bearer " + token});
+
+    this.http.get(`${environment.url}/department`, {headers})
       .subscribe(data => {
         this.departments.length = 0
         this.departments.push(...<Array<Department>> data)
@@ -46,8 +51,10 @@ export class DepartmentService implements Service {
         id: department.regionId
       }
     }
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
-    this.http.post(`${environment.url}/department/create`, dep, {headers})
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    this.http.post(`${environment.url}/department`, dep, {headers})
       .subscribe(() => this.reload())
   }
 
@@ -60,8 +67,10 @@ export class DepartmentService implements Service {
       }
     }
 
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
-    this.http.put(`${environment.url}/department/update`, dep, {headers})
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    this.http.put(`${environment.url}/department`, dep, {headers})
       .subscribe(() => this.reload())
   }
 
@@ -74,8 +83,10 @@ export class DepartmentService implements Service {
       }
     }
 
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
-    this.http.delete(`${environment.url}/department/delete`, {
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    this.http.delete(`${environment.url}/department`, {
       headers: headers,
       body: dep
     })

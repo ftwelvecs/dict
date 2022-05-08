@@ -1,10 +1,11 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Service} from "../../services/service.interface";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 export interface DialogData {
   title: string,
-  fields: Array<any>,
+  description?: string,
+  fields?: Array<any>,
   service: Service,
   buttons: Array<any>,
   element?: any
@@ -18,7 +19,8 @@ export interface DialogData {
 export class ModalComponent implements OnInit {
 
   title: string
-  fields: Array<any>
+  description?: string
+  fields?: Array<any>
   buttons: Array<any>
   service: Service
   element: any
@@ -26,6 +28,7 @@ export class ModalComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData) {
     this.title = data.title
+    this.description = data.description
     this.fields = data.fields
     this.buttons = data.buttons
     this.element = data.element || {}

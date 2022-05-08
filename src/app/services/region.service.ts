@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Service} from "./service.interface";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
+import {AuthHolderService} from "./auth-holder.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,16 @@ import {Observable} from "rxjs";
 export class RegionService implements Service {
   private regions: Array<Region> = []
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authHolderService: AuthHolderService) {
     this.reload()
   }
 
   private reload() {
-    this.http.get(`${environment.url}/region/getAll`)
+    // добавляем заголовок authorization при каждом вызове в бэк
+    const token = this.authHolderService.token;
+    const headers = new HttpHeaders({Authorization: "Bearer " + token});
+
+    this.http.get(`${environment.url}/region`, {headers})
       .subscribe(data => {
         this.regions.length = 0
         this.regions.push(...<Array<Region>> data)
@@ -28,7 +33,10 @@ export class RegionService implements Service {
   }
 
   getRegions(): Observable<Array<Region>>  {
-    return this.http.get<Array<Region>>(`${environment.url}/region/getAll`)
+    // добавляем заголовок authorization при каждом вызове в бэк
+    const token = this.authHolderService.token;
+    const headers = new HttpHeaders({Authorization: "Bearer " + token});
+    return this.http.get<Array<Region>>(`${environment.url}/region`, {headers})
   }
 
   findByName(name: string): Region | undefined {

@@ -1,5 +1,8 @@
 <h1 mat-dialog-title>{{title}}</h1>
 <div mat-dialog-content>
+  <div class="row">
+    {{description}}
+  </div>
   <div class="row" *ngFor="let field of fields">
     <div class="col-sm-12" [ngSwitch]="field.controlType">
       <ng-template ngSwitchCase="input">
