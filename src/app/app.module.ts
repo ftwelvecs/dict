@@ -24,6 +24,9 @@ import {MainLayoutComponent} from './common/main-layout/main-layout.component';
 import {LoginLayoutComponent} from './common/login-layout/login-layout.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {ErrorHandler} from "./common/handler/error.handler";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatTableModule} from "@angular/material/table";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import {ErrorHandler} from "./common/handler/error.handler";
     MatDialogModule,
     MatButtonModule,
     FlexLayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatTableModule,
+    MatMenuModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHandler, multi: true}

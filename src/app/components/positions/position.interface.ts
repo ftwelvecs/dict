@@ -1,4 +1,4 @@
-export interface Position {
+export interface Region {
   id?: number,
   name: string,
   createDate?: Date,

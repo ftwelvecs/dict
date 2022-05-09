@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Position} from "../components/positions/position.interface";
+import {Region} from "../components/positions/position.interface";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";
@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
 })
 export class PositionService implements Service {
 
-  positions: Array<Position> = []
+  positions: Array<Region> = []
 
   constructor(
     private http: HttpClient,
@@ -30,11 +30,11 @@ export class PositionService implements Service {
     this.http.get(`${environment.url}/position`, {headers: headers}) // можно написать {headers}
       .subscribe(data => {
         // ложим данные в массив
-        this.positions.push(...<Array<Position>> data)
+        this.positions.push(...<Array<Region>> data)
       })
   }
 
-  add(position: Position) {
+  add(position: Region) {
     this.positions.push(position)
   }
 
@@ -52,7 +52,7 @@ export class PositionService implements Service {
   }
 
   edit(position: any) {
-    const pos: Position = {
+    const pos: Region = {
       id: position.id,
       name: position.name
     }
@@ -64,7 +64,7 @@ export class PositionService implements Service {
   }
 
   delete(position: any): Observable<any> {
-    const pos: Position = {
+    const pos: Region = {
       id: position.id,
       name: position.name
     }

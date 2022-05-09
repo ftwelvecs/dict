@@ -1,5 +1,5 @@
 import {Department} from "../departments/department.interface";
-import {Position} from "../positions/position.interface";
+import {Region} from "../positions/position.interface";
 
 export interface User {
   username: string,
@@ -8,5 +8,5 @@ export interface User {
   lastName: string,
   email: string,
   department: Department,
-  position: Position
+  position: Region
 }

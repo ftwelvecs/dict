@@ -24,7 +24,7 @@ export class RegionService implements Service {
     this.http.get(`${environment.url}/region`, {headers})
       .subscribe(data => {
         this.regions.length = 0
-        this.regions.push(...<Array<Region>> data)
+        this.regions.push(...<Array<Region>>data)
       })
   }
 
@@ -32,25 +32,59 @@ export class RegionService implements Service {
     this.regions.push(region)
   }
 
-  getRegions(): Observable<Array<Region>>  {
+  getRegions(): Observable<Array<Region>> {
     // добавляем заголовок authorization при каждом вызове в бэк
     const token = this.authHolderService.token;
     const headers = new HttpHeaders({Authorization: "Bearer " + token});
     return this.http.get<Array<Region>>(`${environment.url}/region`, {headers})
   }
 
-  findByName(name: string): Region | undefined {
-    return this.regions.find(region => region.name == name)
-  }
-
-  save(region:any) {
+  save(region: any): Observable<any> {
     //  устанавливаем кодировку в заголовок запроса
-    let headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
     // post метод принимает три параметра:
     // 1. url - путь к серверу
     // 2. body - объект, который нужно передать
     // 3. конфигурационный объект
-    this.http.post(`${environment.url}/region/create`, region, {headers: headers})
+    const observable = this.http.post(`${environment.url}/region`, region, {headers: headers})
+
+    observable.subscribe(() => this.reload())
+
+    return observable;
+  }
+
+  edit(region: any): void {
+    const reg: Region = {
+      id: region.id,
+      name: region.name
+    }
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    this.http.put(`${environment.url}/region`, reg, {headers})
       .subscribe(() => this.reload())
+  }
+
+  delete(region: any): Observable<any> {
+    const reg: Region = {
+      id: region.id,
+      name: region.name
+    }
+    let headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+
+    const observable = this.http.delete(`${environment.url}/region`, {
+      headers: headers,
+      body: reg
+    })
+
+    observable.subscribe(() => {
+      this.reload()
+    })
+
+    return observable;
   }
 }

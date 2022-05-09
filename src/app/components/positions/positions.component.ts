@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Position} from "./position.interface";
+import {Component, OnInit} from '@angular/core';
+import {Region} from "./position.interface";
 import {PositionService} from "../../services/position.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
@@ -11,7 +11,7 @@ import {ModalComponent} from "../../shared/modal/modal.component";
 })
 export class PositionsComponent implements OnInit {
 
-  positions: Array<Position> = []
+  positions: Array<Region> = []
 
   modalId = 'positionModal'
   modalTitle = 'Добавление должности'
@@ -34,7 +34,7 @@ export class PositionsComponent implements OnInit {
     this.positions = this.positionService.positions
   }
 
-  edit(position: Position) {
+  edit(position: Region) {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '550px',
       data: {
@@ -59,7 +59,7 @@ export class PositionsComponent implements OnInit {
     })
   }
 
-  delete(position: Position) {
+  delete(position: Region) {
     this.positionService.delete(position)
   }
 

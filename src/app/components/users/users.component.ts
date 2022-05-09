@@ -4,7 +4,7 @@ import {UserService} from "../../services/user.service";
 import {DepartmentService} from "../../services/department.service";
 import {User} from "./user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Position} from "../positions/position.interface";
+import {Region} from "../positions/position.interface";
 import {PositionService} from "../../services/position.service";
 
 @Component({
@@ -15,7 +15,7 @@ import {PositionService} from "../../services/position.service";
 export class UsersComponent implements OnInit {
 
   private _departments: Array<Department> = []
-  positions: Array<Position> = []
+  positions: Array<Region> = []
   users: Array<User> = []
 
   // декоратор позволяет получить через local reference доступ к элементу DOM

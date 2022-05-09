@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {User} from "../components/users/user.interface";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {AuthHolderService} from "./auth-holder.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,11 @@ export class UserService {
   users: Array<User> = []
 
   // инжектируем сервис HttpClient
-  constructor(private http: HttpClient) {
-    this.http.get(`${environment.url}/user/getAll`)
+  constructor(private http: HttpClient, private authHolderService: AuthHolderService) {
+    // добавляем заголовок authorization при каждом вызове в бэк
+    const token = this.authHolderService.token;
+    const headers = new HttpHeaders({Authorization: "Bearer " + token});
+    this.http.get(`${environment.url}/user`,  {headers})
       .subscribe(data => {
         // три точки распаковывают элементы массива
         // далее они упаковываются в массив users

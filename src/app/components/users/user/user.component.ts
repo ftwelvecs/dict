@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../../../services/user.service";
 import {DepartmentService} from "../../../services/department.service";
 import {PositionService} from "../../../services/position.service";
 import {Department} from "../../departments/department.interface";
-import {Position} from "../../positions/position.interface";
+import {Region} from "../../positions/position.interface";
 import {User} from "../user.interface";
 
 @Component({
@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
   // черновик для редактирования
   editUser: User;
   departments: Array<Department>
-  positions: Array<Position>
+  positions: Array<Region>
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
