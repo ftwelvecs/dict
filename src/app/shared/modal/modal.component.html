@@ -1,42 +1,50 @@
 <h1 mat-dialog-title>{{title}}</h1>
-<div mat-dialog-content>
-  <div class="row">
-    {{description}}
-  </div>
-  <div class="row" *ngFor="let field of fields">
-    <div class="col-sm-12" [ngSwitch]="field.controlType">
-      <ng-template ngSwitchCase="input">
-        <label for="{{field.id}}">{{field.label}}</label>
-        <!--
-          [(ngModel)]="element[field.name]"
-          через ngModel вводимое значение пользователя
-          сохраняем в поле объекта element.
-          Название передается динамически через -> field.name
-        -->
-        <input id="{{field.id}}"
-               [(ngModel)]="element[field.name]"
-               class="form-control"
-               type="{{field.type}}"
-        />
-      </ng-template>
-      <ng-template ngSwitchCase="select">
-        <label for="{{field.id}}">{{field.label}}</label>
-        <select id="{{field.id}}"
-                class="form-control"
-                [(ngModel)]="element[field.name]">
-          <option *ngFor="let option of field.options"
-                  [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
-        </select>
-      </ng-template>
-      <ng-template ngSwitchDefault>
-        <p>No fields</p>
-      </ng-template>
+<form [formGroup]="form">
+
+  <div mat-dialog-content>
+    <div class="row">
+      {{description}}
+    </div>
+    <div class="row" *ngFor="let field of fields">
+      <div class="col-sm-12" [ngSwitch]="field.controlType">
+        <ng-template ngSwitchCase="input">
+          <label for="{{field.id}}">{{field.label}}</label>
+          <!--
+            [(ngModel)]="element[field.name]"
+            через ngModel вводимое значение пользователя
+            сохраняем в поле объекта element.
+            Название передается динамически через -> field.name
+          -->
+          <input id="{{field.id}}"
+                 [(ngModel)]="element[field.name]"
+                 [formControlName]="field.formControlName"
+                 class="form-control"
+                 type="{{field.type}}"
+          />
+        </ng-template>
+        <ng-template ngSwitchCase="select">
+          <label for="{{field.id}}">{{field.label}}</label>
+          <select id="{{field.id}}"
+                  class="form-control"
+                  [(ngModel)]="element[field.name]">
+            <option *ngFor="let option of field.options"
+                    [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
+          </select>
+        </ng-template>
+        <ng-template ngSwitchDefault>
+          <p>No fields</p>
+        </ng-template>
+      </div>
     </div>
   </div>
-</div>
-<div mat-dialog-actions>
-  <button *ngFor="let button of buttons"
-          mat-raised-button
-          color="{{button.color}}"
-          (click)="button.action(element)">{{button.label}}</button>
-</div>
+  <div mat-dialog-actions>
+    <button *ngFor="let button of buttons"
+            mat-raised-button
+            color="{{button.color}}"
+            [disabled]="button.disabled && button.disabled()"
+            (click)="button.action(element)">{{button.label}}
+
+    </button>
+  </div>
+
+</form>

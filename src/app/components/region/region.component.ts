@@ -4,6 +4,7 @@ import {RegionService} from "../../services/region.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-region',
@@ -11,6 +12,8 @@ import {ModalComponent} from "../../shared/modal/modal.component";
   styleUrls: ['./region.component.css']
 })
 export class RegionComponent implements OnInit {
+
+  form: FormGroup;
 
   dataSource = new MatTableDataSource<Region>();
 
@@ -24,11 +27,22 @@ export class RegionComponent implements OnInit {
     // post -> { name: 'Какое-то значение' }
     name: 'name',
     type: 'text',
-    controlType: 'input'
+    controlType: 'input',
+    formControlName: 'regionName'
   }]
 
   // внедряем RegionService
-  constructor(public regionService: RegionService, public dialog: MatDialog) { }
+  constructor(
+    public regionService: RegionService,
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder
+  ) {
+    this.form = formBuilder.group(
+      {
+        regionName: new FormControl(null, Validators.required)
+      }
+    )
+  }
 
   ngOnInit(): void {
     this.load()
@@ -44,21 +58,24 @@ export class RegionComponent implements OnInit {
   add() {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '550px',
+      //поле data передаем в модальное окно в modal.component.ts
       data: {
         title: 'Добавление региона',
         fields: this.regionFields,
         buttons: [{
           color: 'primary',
           label: 'Сохранить',
+          disabled: () => this.form.invalid,  //возвращаем состояние формы - disabled пока input поле пустое
           action: (element: any) => {
             this.regionService.save(element)
               .subscribe(() => this.load())
             dialogRef.close()
           }
-        },{
+        }, {
           label: 'Закрыть',
           action: () => dialogRef.close()
-        }]
+        }],
+        form: this.form
       }
     })
   }
@@ -81,7 +98,7 @@ export class RegionComponent implements OnInit {
               .subscribe(() => this.load())
             dialogRef.close()
           }
-        },{
+        }, {
           label: 'Закрыть',
           action: () => dialogRef.close()
         }]

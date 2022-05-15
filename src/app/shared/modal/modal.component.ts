@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Service} from "../../services/service.interface";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {FormGroup} from "@angular/forms";
 
 export interface DialogData {
   title: string,
@@ -8,7 +9,8 @@ export interface DialogData {
   fields?: Array<any>,
   service: Service,
   buttons: Array<any>,
-  element?: any
+  element?: any,
+  form?: FormGroup
 }
 
 @Component({
@@ -24,6 +26,7 @@ export class ModalComponent implements OnInit {
   buttons: Array<any>
   service: Service
   element: any
+  form: FormGroup
 
   constructor(public dialogRef: MatDialogRef<ModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData) {
@@ -32,6 +35,7 @@ export class ModalComponent implements OnInit {
     this.fields = data.fields
     this.buttons = data.buttons
     this.element = data.element || {}
+    this.form = data.form || new FormGroup({}) //передали форму в конструктор
   }
 
   ngOnInit(): void {
