@@ -1,31 +1,26 @@
-import {
-  Component, ContentChild,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Department} from "./department.interface";
 import {RegionService} from "../../services/region.service";
 import {Region} from "../region/region.interface";
 import {DepartmentService} from "../../services/department.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
+import {MatTableDataSource} from "@angular/material/table";
+import {Position} from "../positions/position.interface";
 
 @Component({
   selector: 'app-department',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css']
 })
-export class DepartmentsComponent implements OnInit, OnDestroy {
-
-  @ContentChild('divElement') divElement: ElementRef
-  // @Output() onDepartmentAdded: EventEmitter<Department> = new EventEmitter<Department>()
+export class DepartmentsComponent implements OnInit {
 
   regions: Array<Region> = []
-  departments: Array<Department> = []
+
+  dataSource = new MatTableDataSource<Position>();
+
+  displayedColumns = ['id', 'name', 'region', 'menu']
 
   departmentFields = [{
     id: 'departmentName',
@@ -46,8 +41,6 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     name: 'regionId'
   }]
 
-  private subscription: Subscription
-
   constructor(private regionService: RegionService,
               public departmentService: DepartmentService,
               private router: Router,
@@ -56,13 +49,18 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.load()
     // связали массив в RegionService со своим внутренним массивом
-    this.departments = this.departmentService.departments
-    this.subscription = this.regionService.getRegions()
+    this.regionService.getRegions()
       .subscribe(data => {
         this.regions.length = 0
         this.regions.push(...data)
       })
+  }
+
+  load() {
+    this.departmentService.getDepartments()
+      .subscribe(data => this.dataSource.data = data)
   }
 
   openDialog() {
@@ -75,6 +73,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
           color: 'primary',
           action: (element: any) => {
             this.departmentService.save(element)
+              .subscribe(() => this.load())
             dialogRef.close()
           },
           label: 'Сохранить'
@@ -95,12 +94,13 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         element: {
           id: department.id,
           name: department.name,
-          regionId: department.region.id
+          regionId: department.region?.id
         },
         buttons: [{
           color: 'primary',
           action: (element: any) => {
             this.departmentService.edit(element)
+              .subscribe(() => this.load())
             dialogRef.close()
           },
           label: 'Редактировать'
@@ -114,10 +114,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
 
   delete(department: Department) {
     this.departmentService.delete(department)
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe()
+      .subscribe(() => this.load())
   }
 
   navigate(department: Department) {

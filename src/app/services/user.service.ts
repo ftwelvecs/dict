@@ -3,38 +3,73 @@ import {User} from "../components/users/user.interface";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {AuthHolderService} from "./auth-holder.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  users: Array<User> = []
-
   // инжектируем сервис HttpClient
-  constructor(private http: HttpClient, private authHolderService: AuthHolderService) {
-    // добавляем заголовок authorization при каждом вызове в бэк
-    const token = this.authHolderService.token;
-    const headers = new HttpHeaders({Authorization: "Bearer " + token});
-    this.http.get(`${environment.url}/user`,  {headers})
-      .subscribe(data => {
-        // три точки распаковывают элементы массива
-        // далее они упаковываются в массив users
-        this.users.push(...<Array<User>> data)
-      })
+  constructor(
+    private http: HttpClient,
+    private authHolderService: AuthHolderService
+  ) {
   }
 
-  add(user: User) {
-    this.users.push(user)
+  getUsers(): Observable<User[]> {
+    const headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+
+    return this.http.get<User[]>(`${environment.url}/user`, {headers})
   }
 
-  findByUsername(username: string) {
-    return this.users.find(user => user.username == username)
+  save(user: User): Observable<any> {
+    const savedUser: User = {
+      username: user.username,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      department: {id: user.departmentId},
+      position: {id: user.positionId}
+    }
+
+    const headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    return this.http.post(`${environment.url}/user`, savedUser, {headers})
   }
 
-  delete(user: User) {
-    let newUsers = this.users.filter(u => u.username != user.username)
-    this.users.length = 0
-    this.users.push(...newUsers)
+  edit(user: User): Observable<any> {
+    const editedUser: User = {
+      id: user.id,
+      username: user.username,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      department: {id: user.departmentId},
+      position: {id: user.positionId}
+    }
+
+    const headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    return this.http.put(`${environment.url}/user`, editedUser, {headers})
+  }
+
+  delete(user: User): Observable<any> {
+    const deletedUser: User = {id: user.id}
+
+    const headers = new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+
+    return this.http.delete(`${environment.url}/user`, {
+      headers: headers,
+      body: deletedUser
+    })
   }
 }

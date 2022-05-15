@@ -22,9 +22,9 @@
       <td>{{user.firstName}}</td>
       <td>{{user.lastName}}</td>
       <td>{{user.email}}</td>
-      <td>{{user.department.name}}</td>
-      <td>{{user.department.region.name}}</td>
-      <td>{{user.position.name}}</td>
+      <td>{{user.department?.name}}</td>
+      <td>{{user.department?.region?.name}}</td>
+      <td>{{user.position?.name}}</td>
     </tr>
     </tbody>
   </table>

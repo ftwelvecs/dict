@@ -4,7 +4,7 @@ import {UserService} from "../../../services/user.service";
 import {DepartmentService} from "../../../services/department.service";
 import {PositionService} from "../../../services/position.service";
 import {Department} from "../../departments/department.interface";
-import {Region} from "../../positions/position.interface";
+import {Position} from "../../positions/position.interface";
 import {User} from "../user.interface";
 
 @Component({
@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
   // черновик для редактирования
   editUser: User;
   departments: Array<Department>
-  positions: Array<Region>
+  positions: Array<Position>
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
@@ -29,14 +29,23 @@ export class UserComponent implements OnInit {
     // http://localhost:4200/users/:username <- берем из адресной строки параметр username
     let username = this.route.snapshot.params['username']
     // ищем через сервис выбранного пользователя
-    this.user = this.userService.findByUsername(username)
-    // клонирование объекта User
-    this.editUser = Object.assign({}, this.user)
-    // Object.assign не клонирует внутренние объекты
-    this.editUser.department = Object.assign({}, this.user.department)
-    this.editUser.position = Object.assign({}, this.user.position)
-    this.departments = this.departmentService.departments
-    this.positions = this.positionService.positions
+    this.userService.getUsers()
+      .subscribe(users  => {
+        let user = users.find(user => user.username == username)
+        if (user) {
+          this.user = user
+          // клонирование объекта User
+          this.editUser = Object.assign({}, this.user)
+          // Object.assign не клонирует внутренние объекты
+          this.editUser.department = Object.assign({}, this.user.department)
+          this.editUser.position = Object.assign({}, this.user.position)
+        }
+      })
+
+    this.departmentService.getDepartments()
+      .subscribe(data => this.departments = data)
+    this.positionService.getPositions()
+      .subscribe(data => this.positions = data)
   }
 
   save() {

@@ -52,12 +52,12 @@
           />
 
           <label for="departments">Список департаментов</label>
-          <select id="departments" class="form-control" [(ngModel)]="editUser.department.name">
+          <select id="departments" class="form-control">
             <option *ngFor="let department of departments">{{department.name}}</option>
           </select>
 
           <label for="positions">Список должностей</label>
-          <select id="positions" class="form-control" [(ngModel)]="editUser.position.name">
+          <select id="positions" class="form-control">
             <option *ngFor="let position of positions">{{position.name}}</option>
           </select>
         </div>
@@ -84,7 +84,7 @@
         <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
         <p class="card-text">Email: {{user.email}}</p>
         <p class="card-text">Департамент: {{user.department.name}}</p>
-        <p class="card-text">Должность: {{user.position.name}}</p>
+        <p class="card-text">Должность: {{user.position?.name}}</p>
         <!-- атрибут routerLink для перехода -->
         <div>
           <input class="btn btn-primary"

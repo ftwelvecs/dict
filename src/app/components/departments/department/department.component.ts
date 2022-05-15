@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {DepartmentService} from "../../../services/department.service";
 import {User} from "../../users/user.interface";
@@ -14,15 +14,24 @@ export class DepartmentComponent implements OnInit {
   department: any
   users: Array<User> = []
 
-  constructor(private route: ActivatedRoute,
-              private departmentService: DepartmentService,
-              private userService: UserService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private departmentService: DepartmentService,
+    private userService: UserService
+  ) {
+  }
 
   ngOnInit(): void {
     const departmentName = this.route.snapshot.params['name']
-    this.department = this.departmentService.findByName(departmentName)
+    this.departmentService.getDepartments()
+      .subscribe(departments => {
+        this.department = departments.find(department => department.name == departmentName)
+      })
     // здесь мы фильтруем юзеров, которые входят в departmentName
-    this.users = this.userService.users.filter(user => user.department.name === this.department.name)
+    this.userService.getUsers()
+      .subscribe(users => {
+        this.users = users.filter(user => user.department?.name === this.department.name)
+      })
   }
 
 }

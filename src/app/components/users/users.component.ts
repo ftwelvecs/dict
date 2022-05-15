@@ -1,11 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Department} from "../departments/department.interface";
 import {UserService} from "../../services/user.service";
 import {DepartmentService} from "../../services/department.service";
 import {User} from "./user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Region} from "../positions/position.interface";
+import {Position} from "../positions/position.interface";
 import {PositionService} from "../../services/position.service";
+import {MatTableDataSource} from "@angular/material/table";
+import {ModalComponent} from "../../shared/modal/modal.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-users',
@@ -14,56 +17,118 @@ import {PositionService} from "../../services/position.service";
 })
 export class UsersComponent implements OnInit {
 
-  private _departments: Array<Department> = []
-  positions: Array<Region> = []
-  users: Array<User> = []
+  departments: Array<Department> = []
+  positions: Array<Position> = []
 
-  // декоратор позволяет получить через local reference доступ к элементу DOM
-  @ViewChild('userNameInput') private userNameInput: ElementRef
-  @ViewChild('passwordInput') private passwordInput: ElementRef
-  @ViewChild('firstNameInput') private firstNameInput: ElementRef
-  @ViewChild('lastNameInput') private lastNameInput: ElementRef
-  @ViewChild('emailInput') private emailInput: ElementRef
-  @ViewChild('departmentSelect') private departmentSelect: ElementRef
-  @ViewChild('positionSelect') private positionSelect: ElementRef
+  dataSource = new MatTableDataSource<User>();
 
-  constructor(private departmentService: DepartmentService,
-              private userService: UserService,
-              private positionService: PositionService,
-              // Router позволяет переходить по страницам
-              private router: Router,
-              // внедряем ActivatedRoute чтобы знать текущий URL путь
-              private route: ActivatedRoute) {
+  displayedColumns = ['id', 'username', 'firstName', 'lastName',  'email', 'department', 'position', 'menu']
+
+  userFields = [{
+    id: 'username',
+    label: 'Логин',
+    // значение соответствует поле объекта, который будет сохранен
+    // например при post запросе значение будет использоваться как ключ
+    // post -> { name: 'Какое-то значение' }
+    name: 'username',
+    type: 'text',
+    controlType: 'input'
+  }, {
+    id: 'password',
+    label: 'Пароль',
+    // значение соответствует поле объекта, который будет сохранен
+    // например при post запросе значение будет использоваться как ключ
+    // post -> { name: 'Какое-то значение' }
+    name: 'password',
+    type: 'password',
+    controlType: 'input'
+  }, {
+    id: 'firstName',
+    label: 'Имя',
+    name: 'firstName',
+    type: 'text',
+    controlType: 'input'
+  }, {
+    id: 'lastName',
+    label: 'Фамилия',
+    name: 'lastName',
+    type: 'text',
+    controlType: 'input'
+  }, {
+    id: 'email',
+    label: 'Почта',
+    name: 'email',
+    type: 'text',
+    controlType: 'input'
+  }, {
+    id: 'department',
+    label: 'Департамент',
+    controlType: 'select',
+    options: this.departments,
+    displayValue: 'name',
+    setValue: 'id',
+    name: 'departmentId'
+  }, {
+    id: 'position',
+    label: 'Должность',
+    controlType: 'select',
+    options: this.positions,
+    displayValue: 'name',
+    setValue: 'id',
+    name: 'positionId'
+  }]
+
+  constructor(
+    private departmentService: DepartmentService,
+    private userService: UserService,
+    private positionService: PositionService,
+    // Router позволяет переходить по страницам
+    private router: Router,
+    // внедряем ActivatedRoute чтобы знать текущий URL путь
+    private route: ActivatedRoute,
+    private dialog: MatDialog
+  ) {
   }
 
   ngOnInit(): void {
-    this._departments = this.departmentService.departments
-    this.users = this.userService.users
-    this.positions = this.positionService.positions
+    this.load()
+    this.departmentService.getDepartments()
+      .subscribe(data => {
+        this.departments.length = 0
+        this.departments.push(...data)
+      })
+    this.positionService.getPositions()
+      .subscribe(data => {
+        this.positions.length = 0
+        this.positions.push(...data)
+      })
   }
 
-  get departments(): Array<Department> {
-    return this._departments;
+  load() {
+    this.userService.getUsers()
+      .subscribe(data => this.dataSource.data = data)
   }
 
-  add() {
-    // в переменной храним имя департамента, получаемой из local reference
-    let departmentName = this.departmentSelect.nativeElement.value
-    // в сервисе по имени департамента ищем сам объект департамент
-    const department: any = this.departmentService.findByName(departmentName)
-    const user: User = {
-      username: this.userNameInput.nativeElement.value,
-      password: this.passwordInput.nativeElement.value,
-      firstName: this.firstNameInput.nativeElement.value,
-      lastName: this.lastNameInput.nativeElement.value,
-      email: this.emailInput.nativeElement.value,
-      // устанавливаем значение объектом Department
-      department: department,
-      position: {
-        name: this.positionSelect.nativeElement.value
+  openDialog() {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Добавление пользователя',
+        fields: this.userFields,
+        buttons: [{
+          color: 'primary',
+          action: (element: any) => {
+            this.userService.save(element)
+              .subscribe(() => this.load())
+            dialogRef.close()
+          },
+          label: 'Сохранить'
+        }, {
+          action: () => dialogRef.close(),
+          label: 'Закрыть'
+        }]
       }
-    }
-    this.userService.add(user)
+    })
   }
 
   // вызывается при двойном клике по пользователю
@@ -75,29 +140,13 @@ export class UsersComponent implements OnInit {
     // this.router.navigate(['users', user.username])
   }
 
-  filter(username: string,
-         firstName: string,
-         lastName: string,
-         email: string,
-         departmentName: string,
-         regionName: string,
-         positionName: string) {
-    // console.log(`username: ${username}, firstName: ${firstName}, lastName: ${lastName}, email: ${email}, departmentName: ${departmentName}, regionName: ${regionName}`)
-
-    this.users = this.userService.users.filter(user =>
-      (!username || user.username.toLowerCase().startsWith(username.toLowerCase())) &&
-      (!firstName || user.firstName.toLowerCase().startsWith(firstName.toLowerCase())) &&
-      (!lastName || user.lastName.toLowerCase().startsWith(lastName.toLowerCase())) &&
-      (!email || user.email.toLowerCase().startsWith(email.toLowerCase())) &&
-      (!departmentName || user.department.name.toLowerCase().startsWith(departmentName.toLowerCase())) &&
-      (!regionName || user.department.region.name?.toLowerCase().startsWith(regionName.toLowerCase())) &&
-      (!positionName || user.position.name.toLowerCase().startsWith(positionName.toLowerCase()))
-    )
-
-  }
-
   delete(user: User) {
     this.userService.delete(user)
+      .subscribe(() => this.load())
+  }
+
+  edit(user: User) {
+
   }
 
 }

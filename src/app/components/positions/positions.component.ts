@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Region} from "./position.interface";
 import {PositionService} from "../../services/position.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
+import {MatTableDataSource} from "@angular/material/table";
+import {Position} from "./position.interface";
 
 @Component({
   selector: 'app-positions',
@@ -11,10 +12,10 @@ import {ModalComponent} from "../../shared/modal/modal.component";
 })
 export class PositionsComponent implements OnInit {
 
-  positions: Array<Region> = []
+  dataSource = new MatTableDataSource<Position>();
 
-  modalId = 'positionModal'
-  modalTitle = 'Добавление должности'
+  displayedColumns = ['id', 'name', 'menu']
+
   // массив описывающий поля для ввода
   positionFields = [{
     id: 'positionName',
@@ -27,18 +28,28 @@ export class PositionsComponent implements OnInit {
     controlType: 'input'
   }]
 
-  constructor(public positionService: PositionService,
-              public dialog: MatDialog) { }
-
-  ngOnInit(): void {
-    this.positions = this.positionService.positions
+  constructor(
+    public positionService: PositionService,
+    public dialog: MatDialog
+  ) {
   }
 
-  edit(position: Region) {
+  ngOnInit(): void {
+    this.load()
+  }
+
+  load() {
+    this.positionService.getPositions()
+      .subscribe(data => {
+        this.dataSource.data = data
+      })
+  }
+
+  edit(position: Position) {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '550px',
       data: {
-        title: 'Редактирование департамента',
+        title: 'Редактирование должности',
         fields: this.positionFields,
         element: {
           id: position.id,
@@ -49,6 +60,7 @@ export class PositionsComponent implements OnInit {
           label: 'Редактировать',
           action: (element: any) => {
             this.positionService.edit(element)
+              .subscribe(() => this.load())
             dialogRef.close()
           }
         },{
@@ -59,8 +71,9 @@ export class PositionsComponent implements OnInit {
     })
   }
 
-  delete(position: Region) {
+  delete(position: Position) {
     this.positionService.delete(position)
+      .subscribe(() => this.load())
   }
 
   openDialog() {
@@ -74,6 +87,7 @@ export class PositionsComponent implements OnInit {
           label: 'Сохранить',
           action: (element: any) => {
             this.positionService.save(element)
+              .subscribe(() => this.load())
             dialogRef.close()
           }
         },{

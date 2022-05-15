@@ -45,7 +45,7 @@ export class RegionComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '550px',
       data: {
-        title: 'Добавление должности',
+        title: 'Добавление региона',
         fields: this.regionFields,
         buttons: [{
           color: 'primary',
@@ -64,7 +64,29 @@ export class RegionComponent implements OnInit {
   }
 
   edit(region: Region) {
-
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Редактирование региона',
+        fields: this.regionFields,
+        element: {
+          id: region.id,
+          name: region.name
+        },
+        buttons: [{
+          color: 'primary',
+          label: 'Редактировать',
+          action: (element: any) => {
+            this.regionService.edit(element)
+              .subscribe(() => this.load())
+            dialogRef.close()
+          }
+        },{
+          label: 'Закрыть',
+          action: () => dialogRef.close()
+        }]
+      }
+    })
   }
 
   delete(region: Region) {

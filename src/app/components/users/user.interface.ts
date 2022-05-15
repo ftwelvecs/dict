@@ -1,12 +1,15 @@
 import {Department} from "../departments/department.interface";
-import {Region} from "../positions/position.interface";
+import {Position} from "../positions/position.interface";
 
 export interface User {
-  username: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  email: string,
-  department: Department,
-  position: Region
+  id?: number,
+  username?: string,
+  password?: string,
+  firstName?: string,
+  lastName?: string,
+  email?: string,
+  department?: Department,
+  position?: Position,
+  departmentId?: number,
+  positionId?: number
 }
