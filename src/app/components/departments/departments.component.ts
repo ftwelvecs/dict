@@ -5,9 +5,10 @@ import {Region} from "../region/region.interface";
 import {DepartmentService} from "../../services/department.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalComponent} from "../../shared/modal/modal.component";
+import {FormModalComponent} from "../../shared/form-modal/form-modal.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {Position} from "../positions/position.interface";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-department',
@@ -22,35 +23,41 @@ export class DepartmentsComponent implements OnInit {
 
   displayedColumns = ['id', 'name', 'region', 'menu']
 
-  departmentFields = [{
-    id: 'departmentName',
-    label: 'Название департамента',
-    // значение соответствует поле объекта, который будет сохранен
-    // например при post запросе значение будет использоваться как ключ
-    // post -> { name: 'Какое-то значение' }
-    name: 'name',
-    type: 'text',
-    controlType: 'input'
-  }, {
-    id: 'regions',
-    label: 'Список регионов',
-    controlType: 'select',
-    options: this.regions,
-    displayValue: 'name',
-    setValue: 'id',
-    name: 'regionId'
-  }]
+  departmentFields = [
+    {
+      id: 'departmentName',
+      label: 'Название департамента',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'name'
+    },{
+      id: 'regions',
+      label: 'Список регионов',
+      controlType: 'select',
+      options: this.regions,
+      displayValue: 'name',
+      formControlName: 'region'
+    }
+  ]
 
-  constructor(private regionService: RegionService,
-              public departmentService: DepartmentService,
-              private router: Router,
-              private route: ActivatedRoute,
-              public dialog: MatDialog) {
+  form: FormGroup
+
+  constructor(
+    private regionService: RegionService,
+    private departmentService: DepartmentService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder
+  ) {
+    this.form = this.formBuilder.group({
+      name: new FormControl(null, Validators.required),
+      region: new FormControl(null, Validators.required)
+    })
   }
 
   ngOnInit(): void {
     this.load()
-    // связали массив в RegionService со своим внутренним массивом
     this.regionService.getRegions()
       .subscribe(data => {
         this.regions.length = 0
@@ -63,51 +70,56 @@ export class DepartmentsComponent implements OnInit {
       .subscribe(data => this.dataSource.data = data)
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(ModalComponent, {
+  add() {
+    this.form.reset()
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
       data: {
         title: 'Добавление департамента',
         fields: this.departmentFields,
-        buttons: [{
-          color: 'primary',
-          action: (element: any) => {
-            this.departmentService.save(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
-          },
-          label: 'Сохранить'
-        },{
-          action: () => dialogRef.close(),
-          label: 'Закрыть'
-        }]
+        buttons: [
+          {
+            color: 'primary',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.departmentService.save(this.form.value)
+                .subscribe(() => this.load())
+              dialogRef.close()
+            },
+            label: 'Сохранить'
+          }, {
+            action: () => dialogRef.close(),
+            label: 'Закрыть'
+          }
+        ],
+        form: this.form
       }
     })
   }
 
   edit(department: Department) {
-    const dialogRef = this.dialog.open(ModalComponent, {
+    this.form.patchValue(department)
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
       data: {
         title: 'Редактирование департамента',
         fields: this.departmentFields,
-        element: {
-          id: department.id,
-          name: department.name,
-          regionId: department.region?.id
-        },
-        buttons: [{
-          color: 'primary',
-          action: (element: any) => {
-            this.departmentService.edit(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
-          },
-          label: 'Редактировать'
-        },{
-          action: () => dialogRef.close(),
-          label: 'Закрыть'
-        }],
+        buttons: [
+          {
+            color: 'primary',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.departmentService.edit(Object.assign(department, this.form.value))
+                .subscribe(() => this.load())
+              dialogRef.close()
+            },
+            label: 'Редактировать'
+          },{
+            action: () => dialogRef.close(),
+            label: 'Закрыть'
+          }
+        ],
+        form: this.form
       }
     })
   }

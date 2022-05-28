@@ -25,6 +25,11 @@ export class AuthHolderService {
   get token(): string {
     return localStorage.getItem('token') as string;
   }
+
+  logout() {
+    localStorage.removeItem('token')
+    this.router.navigate(['/login'])
+  }
 }
 
 export interface AuthRequest {

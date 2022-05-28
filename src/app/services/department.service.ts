@@ -18,58 +18,24 @@ export class DepartmentService implements Service {
   }
 
   getDepartments(): Observable<Department[]> {
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.get<Department[]>(`${environment.url}/department`, {headers})
+    return this.http.get<Department[]>(`${environment.url}/department`, {headers: this.getHeaders()})
   }
 
   save(department: any): Observable<any> {
-    const dep: Department = {
-      name: department.name,
-      region: {
-        id: department.regionId
-      }
-    }
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.post(`${environment.url}/department`, dep, {headers})
+    return this.http.post(`${environment.url}/department`, department, {headers: this.getHeaders()})
   }
 
   edit(department: any): Observable<any> {
-    const dep: Department = {
-      id: department.id,
-      name: department.name,
-      region: {
-        id: department.regionId
-      }
-    }
-
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.put(`${environment.url}/department`, dep, {headers})
+    return this.http.put(`${environment.url}/department`, department, {headers: this.getHeaders()})
   }
 
   delete(department: any): Observable<any> {
-    const dep: Department = {
-      id: department.id,
-      name: department.name,
-      region: {
-        id: department.regionId
-      }
-    }
+    return this.http.delete(`${environment.url}/department`, {headers: this.getHeaders(), body: department})
+  }
 
-    const headers = new HttpHeaders()
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders()
       .set('Content-type', 'application/json; charset=utf-8')
       .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.delete(`${environment.url}/department`, {
-      headers: headers,
-      body: dep
-    })
   }
 }

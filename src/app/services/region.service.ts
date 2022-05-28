@@ -18,47 +18,24 @@ export class RegionService implements Service {
   }
 
   getRegions(): Observable<Array<Region>> {
-    // добавляем заголовок authorization при каждом вызове в бэк
-    const token = this.authHolderService.token;
-    const headers = new HttpHeaders({Authorization: "Bearer " + token});
-    return this.http.get<Array<Region>>(`${environment.url}/region`, {headers})
+    return this.http.get<Array<Region>>(`${environment.url}/region`, {headers: this.getHeaders()})
   }
 
   save(region: any): Observable<any> {
-    //  устанавливаем кодировку в заголовок запроса
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    // post метод принимает три параметра:
-    // 1. url - путь к серверу
-    // 2. body - объект, который нужно передать
-    // 3. конфигурационный объект
-    return this.http.post(`${environment.url}/region`, region, {headers: headers});
+    return this.http.post(`${environment.url}/region`, region, {headers: this.getHeaders()});
   }
 
   edit(region: any): Observable<any> {
-    const reg: Region = {
-      id: region.id,
-      name: region.name
-    }
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.put(`${environment.url}/region`, reg, {headers});
+    return this.http.put(`${environment.url}/region`, region, {headers: this.getHeaders()});
   }
 
   delete(region: any): Observable<any> {
-    const reg: Region = {
-      id: region.id,
-      name: region.name
-    }
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
+    return this.http.delete(`${environment.url}/region`, {headers: this.getHeaders(), body: region});
+  }
 
-    return this.http.delete(`${environment.url}/region`, {
-      headers: headers,
-      body: reg
-    });
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders()
+      .set('Content-type', 'application/json; charset=utf-8')
+      .set('Authorization', `Bearer ${this.authHolderService.token}`);
   }
 }

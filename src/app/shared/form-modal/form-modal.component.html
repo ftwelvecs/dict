@@ -6,17 +6,10 @@
       {{description}}
     </div>
     <div class="row" *ngFor="let field of fields">
-      <div class="col-sm-12" [ngSwitch]="field.controlType">
+      <div class="col-sm-12 p-10" [ngSwitch]="field.controlType">
         <ng-template ngSwitchCase="input">
           <label for="{{field.id}}">{{field.label}}</label>
-          <!--
-            [(ngModel)]="element[field.name]"
-            через ngModel вводимое значение пользователя
-            сохраняем в поле объекта element.
-            Название передается динамически через -> field.name
-          -->
           <input id="{{field.id}}"
-                 [(ngModel)]="element[field.name]"
                  [formControlName]="field.formControlName"
                  class="form-control"
                  type="{{field.type}}"
@@ -26,9 +19,12 @@
           <label for="{{field.id}}">{{field.label}}</label>
           <select id="{{field.id}}"
                   class="form-control"
-                  [(ngModel)]="element[field.name]">
+                  [compareWith]="compare"
+                  [formControlName]="field.formControlName">
             <option *ngFor="let option of field.options"
-                    [ngValue]="option[field.setValue]">{{option[field.displayValue]}}</option>
+                    [ngValue]="option">
+              {{field.dataType === 'enum' ? option : option[field.displayValue]}}
+            </option>
           </select>
         </ng-template>
         <ng-template ngSwitchDefault>

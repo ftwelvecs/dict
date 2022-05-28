@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {PositionService} from "../../services/position.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalComponent} from "../../shared/modal/modal.component";
+import {FormModalComponent} from "../../shared/form-modal/form-modal.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {Position} from "./position.interface";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-positions',
@@ -16,22 +17,26 @@ export class PositionsComponent implements OnInit {
 
   displayedColumns = ['id', 'name', 'menu']
 
-  // массив описывающий поля для ввода
-  positionFields = [{
-    id: 'positionName',
-    label: 'Должность',
-    // значение соответствует поле объекта, который будет сохранен
-    // например при post запросе значение будет использоваться как ключ
-    // post -> { name: 'Какое-то значение' }
-    name: 'name',
-    type: 'text',
-    controlType: 'input'
-  }]
+  positionFields = [
+    {
+      id: 'positionName',
+      label: 'Должность',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'name'
+    }
+  ]
+
+  form: FormGroup
 
   constructor(
-    public positionService: PositionService,
-    public dialog: MatDialog
+    private positionService: PositionService,
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder
   ) {
+    this.form = this.formBuilder.group({
+      name: new FormControl(null, Validators.required)
+    })
   }
 
   ngOnInit(): void {
@@ -45,28 +50,54 @@ export class PositionsComponent implements OnInit {
       })
   }
 
+  add() {
+    this.form.reset()
+    const dialogRef = this.dialog.open(FormModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Добавление должности',
+        fields: this.positionFields,
+        buttons: [
+          {
+            color: 'primary',
+            label: 'Сохранить',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.positionService.save(this.form.value)
+                .subscribe(() => this.load())
+              dialogRef.close()
+            }
+          }, {
+            label: 'Закрыть',
+            action: () => dialogRef.close()
+          }
+        ],
+        form: this.form
+      }
+    })
+  }
+
   edit(position: Position) {
-    const dialogRef = this.dialog.open(ModalComponent, {
+    this.form.patchValue(position)
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
       data: {
         title: 'Редактирование должности',
         fields: this.positionFields,
-        element: {
-          id: position.id,
-          name: position.name
-        },
         buttons: [{
           color: 'primary',
           label: 'Редактировать',
-          action: (element: any) => {
-            this.positionService.edit(element)
+          disabled: () => this.form.invalid,
+          action: () => {
+            this.positionService.edit(Object.assign(position, this.form.value))
               .subscribe(() => this.load())
             dialogRef.close()
           }
-        },{
+        }, {
           label: 'Закрыть',
           action: () => dialogRef.close()
-        }]
+        }],
+        form: this.form
       }
     })
   }
@@ -74,27 +105,5 @@ export class PositionsComponent implements OnInit {
   delete(position: Position) {
     this.positionService.delete(position)
       .subscribe(() => this.load())
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(ModalComponent, {
-      width: '550px',
-      data: {
-        title: 'Добавление должности',
-        fields: this.positionFields,
-        buttons: [{
-          color: 'primary',
-          label: 'Сохранить',
-          action: (element: any) => {
-            this.positionService.save(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
-          }
-        },{
-          label: 'Закрыть',
-          action: () => dialogRef.close()
-        }]
-      }
-    })
   }
 }

@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {Position} from "../components/positions/position.interface";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Service} from "./service.interface";
@@ -18,48 +17,25 @@ export class PositionService implements Service {
   }
 
   getPositions(): Observable<any> {
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.get(`${environment.url}/position`, {headers: headers});
+    return this.http.get(`${environment.url}/position`, {headers: this.getHeaders()});
   }
 
   save(position: any): Observable<any> {
-    //  устанавливаем кодировку в заголовок запроса
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    // post метод принимает три параметра:
-    // 1. url - путь к серверу
-    // 2. body - объект, который нужно передать
-    // 3. конфигурационный объект
-    return this.http.post(`${environment.url}/position`, position, {headers: headers})
+    return this.http.post(`${environment.url}/position`, position, {headers: this.getHeaders()})
   }
 
   edit(position: any): Observable<any> {
-    const pos: Position = {
-      id: position.id,
-      name: position.name
-    }
-    let headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.put(`${environment.url}/position`, pos, {headers})
+    return this.http.put(`${environment.url}/position`, position, {headers: this.getHeaders()})
   }
 
   delete(position: any): Observable<any> {
-    const pos: Position = {
-      id: position.id,
-      name: position.name
-    }
-    let headers = new HttpHeaders()
+    return this.http.delete(`${environment.url}/position`, {headers: this.getHeaders(), body: position});
+  }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders()
       .set('Content-type', 'application/json; charset=utf-8')
       .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.delete(`${environment.url}/position`, {
-      headers: headers,
-      body: pos
-    });
   }
 
 }

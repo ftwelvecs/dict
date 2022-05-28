@@ -7,8 +7,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Position} from "../positions/position.interface";
 import {PositionService} from "../../services/position.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {ModalComponent} from "../../shared/modal/modal.component";
+import {FormModalComponent} from "../../shared/form-modal/form-modal.component";
 import {MatDialog} from "@angular/material/dialog";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {checkPassword} from "../../shared/validators";
+import {Role, RoleService} from "../../services/role.service";
 
 @Component({
   selector: 'app-users',
@@ -19,75 +22,89 @@ export class UsersComponent implements OnInit {
 
   departments: Array<Department> = []
   positions: Array<Position> = []
+  roles: Array<Role> = []
 
   dataSource = new MatTableDataSource<User>();
 
-  displayedColumns = ['id', 'username', 'firstName', 'lastName',  'email', 'department', 'position', 'menu']
+  displayedColumns = ['id', 'username', 'firstName', 'lastName', 'email', 'department', 'position', 'menu']
 
-  userFields = [{
-    id: 'username',
-    label: 'Логин',
-    // значение соответствует поле объекта, который будет сохранен
-    // например при post запросе значение будет использоваться как ключ
-    // post -> { name: 'Какое-то значение' }
-    name: 'username',
-    type: 'text',
-    controlType: 'input'
-  }, {
-    id: 'password',
-    label: 'Пароль',
-    // значение соответствует поле объекта, который будет сохранен
-    // например при post запросе значение будет использоваться как ключ
-    // post -> { name: 'Какое-то значение' }
-    name: 'password',
-    type: 'password',
-    controlType: 'input'
-  }, {
-    id: 'firstName',
-    label: 'Имя',
-    name: 'firstName',
-    type: 'text',
-    controlType: 'input'
-  }, {
-    id: 'lastName',
-    label: 'Фамилия',
-    name: 'lastName',
-    type: 'text',
-    controlType: 'input'
-  }, {
-    id: 'email',
-    label: 'Почта',
-    name: 'email',
-    type: 'text',
-    controlType: 'input'
-  }, {
-    id: 'department',
-    label: 'Департамент',
-    controlType: 'select',
-    options: this.departments,
-    displayValue: 'name',
-    setValue: 'id',
-    name: 'departmentId'
-  }, {
-    id: 'position',
-    label: 'Должность',
-    controlType: 'select',
-    options: this.positions,
-    displayValue: 'name',
-    setValue: 'id',
-    name: 'positionId'
-  }]
+  userFields = [
+    {
+      id: 'username',
+      label: 'Логин',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'username'
+    }, {
+      id: 'password',
+      label: 'Пароль',
+      type: 'password',
+      controlType: 'input',
+      formControlName: 'password'
+    }, {
+      id: 'firstName',
+      label: 'Имя',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'firstName'
+    }, {
+      id: 'lastName',
+      label: 'Фамилия',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'lastName'
+    }, {
+      id: 'email',
+      label: 'Почта',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'email'
+    }, {
+      id: 'department',
+      label: 'Департамент',
+      controlType: 'select',
+      options: this.departments,
+      displayValue: 'name',
+      formControlName: 'department'
+    }, {
+      id: 'position',
+      label: 'Должность',
+      controlType: 'select',
+      options: this.positions,
+      displayValue: 'name',
+      formControlName: 'position'
+    }, {
+      id: 'role',
+      label: 'Роль',
+      controlType: 'select',
+      options: this.roles,
+      dataType: 'enum',
+      formControlName: 'role'
+    }
+  ]
+
+  form: FormGroup
 
   constructor(
     private departmentService: DepartmentService,
     private userService: UserService,
     private positionService: PositionService,
-    // Router позволяет переходить по страницам
+    private roleService: RoleService,
     private router: Router,
-    // внедряем ActivatedRoute чтобы знать текущий URL путь
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder
   ) {
+    this.form = this.formBuilder.group({
+      username: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      password: new FormControl(null, [Validators.required, checkPassword]),
+      firstName: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.email, Validators.required]),
+      department: new FormControl(null, Validators.required),
+      position: new FormControl(null, Validators.required),
+      role: new FormControl(null, Validators.required)
+    })
   }
 
   ngOnInit(): void {
@@ -102,6 +119,11 @@ export class UsersComponent implements OnInit {
         this.positions.length = 0
         this.positions.push(...data)
       })
+    this.roleService.getRoles()
+      .subscribe(data => {
+        this.roles.length = 0
+        this.roles.push(...data)
+      })
   }
 
   load() {
@@ -109,26 +131,63 @@ export class UsersComponent implements OnInit {
       .subscribe(data => this.dataSource.data = data)
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(ModalComponent, {
+  add() {
+    this.form.reset()
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
       data: {
         title: 'Добавление пользователя',
         fields: this.userFields,
-        buttons: [{
-          color: 'primary',
-          action: (element: any) => {
-            this.userService.save(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
-          },
-          label: 'Сохранить'
-        }, {
-          action: () => dialogRef.close(),
-          label: 'Закрыть'
-        }]
+        buttons: [
+          {
+            color: 'primary',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.userService.save(this.form.value)
+                .subscribe(() => this.load())
+              dialogRef.close()
+            },
+            label: 'Сохранить'
+          }, {
+            action: () => dialogRef.close(),
+            label: 'Закрыть'
+          }
+        ],
+        form: this.form
       }
     })
+  }
+
+  edit(user: User) {
+    this.form.patchValue(user)
+    const dialogRef = this.dialog.open(FormModalComponent, {
+      width: '550px',
+      data: {
+        title: 'Редактирование пользователя',
+        fields: this.userFields.filter(field => field.id !== 'password'),
+        buttons: [
+          {
+            color: 'primary',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.userService.edit(Object.assign(user, this.form.value))
+                .subscribe(() => this.load())
+              dialogRef.close()
+            },
+            label: 'Сохранить'
+          }, {
+            action: () => dialogRef.close(),
+            label: 'Закрыть'
+          }
+        ],
+        form: this.form
+      }
+    })
+  }
+
+  delete(user: User) {
+    this.userService.delete(user)
+      .subscribe(() => this.load())
   }
 
   // вызывается при двойном клике по пользователю
@@ -139,14 +198,4 @@ export class UsersComponent implements OnInit {
     // а если абсолютный путь, то указываем весь путь начиная с корня
     // this.router.navigate(['users', user.username])
   }
-
-  delete(user: User) {
-    this.userService.delete(user)
-      .subscribe(() => this.load())
-  }
-
-  edit(user: User) {
-
-  }
-
 }

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Service} from "../../services/service.interface";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {FormGroup} from "@angular/forms";
 
 export interface DialogData {
@@ -15,10 +15,10 @@ export interface DialogData {
 
 @Component({
   selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  templateUrl: './form-modal.component.html',
+  styleUrls: ['./form-modal.component.css']
 })
-export class ModalComponent implements OnInit {
+export class FormModalComponent implements OnInit {
 
   title: string
   description?: string
@@ -28,8 +28,9 @@ export class ModalComponent implements OnInit {
   element: any
   form: FormGroup
 
-  constructor(public dialogRef: MatDialogRef<ModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data: DialogData
+  ) {
     this.title = data.title
     this.description = data.description
     this.fields = data.fields
@@ -39,6 +40,10 @@ export class ModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  compare(opt1: any, opt2: any): boolean {
+    return opt1?.id && opt2?.id ? opt1.id === opt2.id : opt1 === opt2;
   }
 
 }

@@ -3,7 +3,7 @@ import {Region} from "./region.interface";
 import {RegionService} from "../../services/region.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
-import {ModalComponent} from "../../shared/modal/modal.component";
+import {FormModalComponent} from "../../shared/form-modal/form-modal.component";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -19,27 +19,25 @@ export class RegionComponent implements OnInit {
 
   displayedColumns = ['id', 'name', 'menu']
 
-  regionFields = [{
-    id: 'regionName',
-    label: 'Название региона',
-    // значение соответствует поле объекта, который будет сохранен
-    // например при post запросе значение будет использоваться как ключ
-    // post -> { name: 'Какое-то значение' }
-    name: 'name',
-    type: 'text',
-    controlType: 'input',
-    formControlName: 'regionName'
-  }]
+  regionFields = [
+    {
+      id: 'regionName',
+      label: 'Название региона',
+      type: 'text',
+      controlType: 'input',
+      formControlName: 'name'
+    }
+  ]
 
   // внедряем RegionService
   constructor(
-    public regionService: RegionService,
-    public dialog: MatDialog,
+    private regionService: RegionService,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder
   ) {
     this.form = formBuilder.group(
       {
-        regionName: new FormControl(null, Validators.required)
+        name: new FormControl(null, Validators.required)
       }
     )
   }
@@ -56,52 +54,56 @@ export class RegionComponent implements OnInit {
   }
 
   add() {
-    const dialogRef = this.dialog.open(ModalComponent, {
+    this.form.reset()
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
-      //поле data передаем в модальное окно в modal.component.ts
+      //поле data передаем в модальное окно в form-modal.component.ts
       data: {
         title: 'Добавление региона',
         fields: this.regionFields,
-        buttons: [{
-          color: 'primary',
-          label: 'Сохранить',
-          disabled: () => this.form.invalid,  //возвращаем состояние формы - disabled пока input поле пустое
-          action: (element: any) => {
-            this.regionService.save(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
+        buttons: [
+          {
+            color: 'primary',
+            label: 'Сохранить',
+            disabled: () => this.form.invalid,  //возвращаем состояние формы - disabled пока input поле пустое
+            action: () => {
+              this.regionService.save(this.form.value)
+                .subscribe(() => this.load())
+              dialogRef.close()
+            }
+          }, {
+            label: 'Закрыть',
+            action: () => dialogRef.close()
           }
-        }, {
-          label: 'Закрыть',
-          action: () => dialogRef.close()
-        }],
+        ],
         form: this.form
       }
     })
   }
 
   edit(region: Region) {
-    const dialogRef = this.dialog.open(ModalComponent, {
+    this.form.patchValue(region)
+    const dialogRef = this.dialog.open(FormModalComponent, {
       width: '550px',
       data: {
         title: 'Редактирование региона',
         fields: this.regionFields,
-        element: {
-          id: region.id,
-          name: region.name
-        },
-        buttons: [{
-          color: 'primary',
-          label: 'Редактировать',
-          action: (element: any) => {
-            this.regionService.edit(element)
-              .subscribe(() => this.load())
-            dialogRef.close()
+        buttons: [
+          {
+            color: 'primary',
+            label: 'Редактировать',
+            disabled: () => this.form.invalid,
+            action: () => {
+              this.regionService.edit(Object.assign(region, this.form.value))
+                .subscribe(() => this.load())
+              dialogRef.close()
+            }
+          },{
+            label: 'Закрыть',
+            action: () => dialogRef.close()
           }
-        }, {
-          label: 'Закрыть',
-          action: () => dialogRef.close()
-        }]
+        ],
+        form: this.form
       }
     })
   }

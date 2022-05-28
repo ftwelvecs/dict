@@ -10,7 +10,6 @@ import {Observable} from "rxjs";
 })
 export class UserService {
 
-  // инжектируем сервис HttpClient
   constructor(
     private http: HttpClient,
     private authHolderService: AuthHolderService
@@ -18,58 +17,24 @@ export class UserService {
   }
 
   getUsers(): Observable<User[]> {
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.get<User[]>(`${environment.url}/user`, {headers})
+    return this.http.get<User[]>(`${environment.url}/user`, {headers: this.getHeaders()})
   }
 
   save(user: User): Observable<any> {
-    const savedUser: User = {
-      username: user.username,
-      password: user.password,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      department: {id: user.departmentId},
-      position: {id: user.positionId}
-    }
-
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.post(`${environment.url}/user`, savedUser, {headers})
+    return this.http.post(`${environment.url}/user`, user, {headers: this.getHeaders()})
   }
 
   edit(user: User): Observable<any> {
-    const editedUser: User = {
-      id: user.id,
-      username: user.username,
-      password: user.password,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      department: {id: user.departmentId},
-      position: {id: user.positionId}
-    }
-
-    const headers = new HttpHeaders()
-      .set('Content-type', 'application/json; charset=utf-8')
-      .set('Authorization', `Bearer ${this.authHolderService.token}`)
-    return this.http.put(`${environment.url}/user`, editedUser, {headers})
+    return this.http.put(`${environment.url}/user`, user, {headers: this.getHeaders()})
   }
 
   delete(user: User): Observable<any> {
-    const deletedUser: User = {id: user.id}
+    return this.http.delete(`${environment.url}/user`, {headers: this.getHeaders(), body: user})
+  }
 
-    const headers = new HttpHeaders()
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders()
       .set('Content-type', 'application/json; charset=utf-8')
       .set('Authorization', `Bearer ${this.authHolderService.token}`)
-
-    return this.http.delete(`${environment.url}/user`, {
-      headers: headers,
-      body: deletedUser
-    })
   }
 }

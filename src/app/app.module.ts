@@ -14,8 +14,7 @@ import {UserComponent} from './components/users/user/user.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
 import {PositionsComponent} from './components/positions/positions.component';
 import {DepartmentComponent} from './components/departments/department/department.component';
-import {MenuComponent} from './shared/menu/menu.component';
-import {ModalComponent} from './shared/modal/modal.component';
+import {FormModalComponent} from './shared/form-modal/form-modal.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
@@ -27,6 +26,9 @@ import {ErrorHandler} from "./common/handler/error.handler";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatTableModule} from "@angular/material/table";
 import {MatMenuModule} from "@angular/material/menu";
+import {HeaderComponent} from './shared/header/header.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -40,11 +42,11 @@ import {MatMenuModule} from "@angular/material/menu";
     NotFoundComponent,
     PositionsComponent,
     DepartmentComponent,
-    MenuComponent,
-    ModalComponent,
+    FormModalComponent,
     LoginComponent,
     MainLayoutComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,9 @@ import {MatMenuModule} from "@angular/material/menu";
     ReactiveFormsModule,
     MatTabsModule,
     MatTableModule,
-    MatMenuModule
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHandler, multi: true}

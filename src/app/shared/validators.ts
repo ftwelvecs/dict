@@ -4,7 +4,7 @@ import {AbstractControl, ValidationErrors} from "@angular/forms";
 export function checkPassword(control: AbstractControl): ValidationErrors | null {
   // value -> значение введенное в input
   const value = control.value;
-  const specSymbols = ['!', '@', '#', '&'];
+  const specSymbols = ['!', '@', '#', '&', '$'];
   let result: any = {checkPassword: true};
   if (control.value) {
     specSymbols.forEach(symbol => {
