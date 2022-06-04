@@ -27,6 +27,10 @@ export class MainLayoutComponent implements OnInit {
     {
       label: 'Должности',
       link: '/positions'
+    },
+    {
+      label: 'Активы',
+      link: '/material_values'
     }
   ];
 

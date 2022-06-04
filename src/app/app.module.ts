@@ -29,6 +29,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {HeaderComponent} from './shared/header/header.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
+import { MaterialValuesComponent } from './components/material-values/material-values.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {MatIconModule} from "@angular/material/icon";
     LoginComponent,
     MainLayoutComponent,
     LoginLayoutComponent,
-    HeaderComponent
+    HeaderComponent,
+    MaterialValuesComponent
   ],
   imports: [
     BrowserModule,

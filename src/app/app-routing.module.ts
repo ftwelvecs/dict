@@ -12,6 +12,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {MainLayoutComponent} from "./common/main-layout/main-layout.component";
 import {LoginLayoutComponent} from "./common/login-layout/login-layout.component";
 import {AuthGuard} from "./common/guards/auth.guard";
+import {MaterialValuesComponent} from "./components/material-values/material-values.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -24,7 +25,8 @@ const routes: Routes = [
       {path: 'region', component: RegionComponent},
       {path: 'departments', component: DepartmentsComponent},
       {path: 'departments/:name', component: DepartmentComponent},
-      {path: 'positions', component: PositionsComponent}
+      {path: 'positions', component: PositionsComponent},
+      {path: 'material_values', component: MaterialValuesComponent}
     ]
   },
   {
